@@ -1,0 +1,15 @@
+# All ignored files and directories are stored here
+
+# binary folder
+/bin/
+
+# .class files
+*.class
+
+# Visual Studio Code files
+.vscode
+
+# Eclipse files
+.settings
+.project
+.classpath
