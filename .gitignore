@@ -14,3 +14,7 @@
 .project
 .classpath
 .metadata
+
+# build files
+*.jar
+build/

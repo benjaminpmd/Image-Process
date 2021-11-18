@@ -1,6 +1,6 @@
 Here are the options available in the application
 
-Use java -jar gui.jar
+Use java -jar cli.jar
 [-h or --help] Provide description of the available options for the application.
 
 [-d <Directory path>] Display all images of type PNG, JPG and JPEG in the provided directory.
