@@ -1,13 +1,13 @@
-/**
- * This class contains the main static method running the cli
- */
 package cli;
 
-import cli.Core;
 
 /**
+ * This class contains all the methods that manages the cli outputs
+ * The main method of the cli calls the Core class methods
+ * 
  * @author Benjamin PAUMARD
- * @version 2021.11.19 (0.1.1)
+ * @version 2021.11.19d (0.1.2)
+ * @since November, 21th 2021
  */
 
 class Cli {
