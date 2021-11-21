@@ -3,10 +3,6 @@
  */
 package cli;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import cli.Core;
 
 /**
@@ -28,9 +24,6 @@ class Cli {
 			if ((args[0].equals("-h")) || (args[0].equals("--help"))) {
 				core.printHelp();
 			}
-			else if (args[0].equals("-d")) {
-				// call the directory explorer here
-			}
 			else {
 				System.err.println("Error: unknown option \"" + args[0] + "\". You can check available options using -h or --help");
 			}
@@ -38,7 +31,11 @@ class Cli {
 		else if (args.length == 2) {
 			if (args[0].equals("-f")) {
 				// call the EXIF data of the image (args[1])
-			} else {
+			}
+			else if (args[0].equals("-d")) {
+				// call the directory explorer here (args[1])
+			}
+			else {
 				System.err.println("Error: unknown option \"" + args[1] + "\". You can check available options using -h or --help");
 			}
 		}
