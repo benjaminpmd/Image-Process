@@ -30,7 +30,7 @@ class Cli {
 		}
 		else if (args.length == 2) {
 			if (args[0].equals("-f")) {
-				// call the EXIF data of the image (args[1])
+				core.printExif(args[1]);
 			}
 			else if (args[0].equals("-d")) {
 				// call the directory explorer here (args[1])

@@ -1,10 +1,14 @@
 package cli;
 
+import java.util.HashMap;
+
+import exif.ExifReader;
+
 /**
  * This class contains all the methods that manages the cli outputs
  * The main method of the cli calls the Core class methods
  * 
- * @author Benjamin PAUMARD
+ * @authors Alice MABILLE, Benjamin PAUMARD
  * @version 2021.11.21d (0.1.2)
  * @since November, 21th 2021
  */
@@ -23,9 +27,22 @@ public class Core {
         	+ "\n"
         	+ "You also can run the graphical version of the application by using java -jar gui.jar\n"
         );
-        
     }
 
-    
+	public void printExif(String path) {
+		HashMap<String, String> metadata = new HashMap<String, String>();
+		try {
+			ExifReader reader = new ExifReader(path);
+			metadata = reader.getExif();
+			String imageName = reader.getFilename();
+			System.out.println("\n\nEXIF Data for the following file : " + imageName + "\n\n");
+		} catch (Exception e) {
+			System.err.println("Something went wrong");
+			System.err.println(e);
+		}
+		for (String key: metadata.keySet()) {
+			System.out.println(key + " : " + metadata.get(key));
+		}
+	}
 }
 
