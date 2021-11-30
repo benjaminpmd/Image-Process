@@ -14,3 +14,19 @@
 .project
 .classpath
 .metadata
+
+# Intelij files
+.idea
+*.iml
+
+# build files
+*.jar
+build/
+/target/
+
+
+# test files
+*.png
+*.jpg
+*.jpeg
+assets
