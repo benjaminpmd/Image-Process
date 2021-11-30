@@ -1,8 +1,14 @@
 package cli;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.drew.imaging.ImageProcessingException;
+
 import exif.ExifReader;
+import explorer.FileLister;
 
 /**
  * This class contains all the methods that manages the cli outputs
@@ -15,6 +21,9 @@ import exif.ExifReader;
 
 
 public class Core {
+	/**
+	 * Method to print the help content.
+	 */
     public void printHelp() {
         System.out.println("\n\n"
         	+ "List of the existing commands\n\n"
@@ -29,6 +38,10 @@ public class Core {
         );
     }
 
+    /**
+     * print the EXIF data of an specified image.
+     * @param path the path to the image you want to check
+     */
 	public void printExif(String path) {
 		HashMap<String, String> metadata = new HashMap<String, String>();
 		try {
@@ -36,12 +49,36 @@ public class Core {
 			metadata = reader.getExif();
 			String imageName = reader.getFilename();
 			System.out.println("\n\nEXIF Data for the following file : " + imageName + "\n\n");
-		} catch (Exception e) {
-			System.err.println("Something went wrong");
-			System.err.println(e);
+		} catch (FileNotFoundException e) {
+			System.err.println("The path provided does not lead to an image.");
+		} catch (IllegalArgumentException e) {
+			System.err.println("The path provided does not lead to an image.");
+		}catch (ImageProcessingException e) {
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
 		}
 		for (String key: metadata.keySet()) {
 			System.out.println(key + " : " + metadata.get(key));
+		}
+	}
+
+	/**
+	 * Method to print all png, jpg and jpeg images in a directory.
+	 * @param path the directory you want to check
+	 */
+	public void printExplorer(String path) {
+		ArrayList<String> images = new ArrayList<String>();
+		FileLister lister = new FileLister(path);
+		try {
+			images = lister.exploreImages();
+			for (String image : images) {
+				System.out.println(image);
+			}
+		} catch (IllegalArgumentException e) {
+			System.err.println("The path provived does not lead to a directory.");
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
 		}
 	}
 }

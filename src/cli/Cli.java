@@ -13,7 +13,7 @@ package cli;
 class Cli {
 	/**
 	 * Static main method running the cli
-	 * @param args
+	 * @param args arguments passed by the user
 	 */
 	public static void main(String[] args) {
 		Core core = new Core();
@@ -33,7 +33,7 @@ class Cli {
 				core.printExif(args[1]);
 			}
 			else if (args[0].equals("-d")) {
-				// call the directory explorer here (args[1])
+				core.printExplorer(args[1]);
 			}
 			else {
 				System.err.println("Error: unknown option \"" + args[1] + "\". You can check available options using -h or --help");
