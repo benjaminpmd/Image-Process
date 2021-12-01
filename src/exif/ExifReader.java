@@ -14,10 +14,10 @@ import com.drew.metadata.Tag;
 import explorer.TypeChecker;
 
 /**
- * @author @Benjamin PAUMARD, Alice MABILLE
- * @version 2021.11.23 (0.5.3b)
+ * @author Benjamin PAUMARD
+ * @version 2021.11.30 (0.7.0b)
  * @since November, 18th, 2021
- * ExifReader contains all methods to check the properties of an image of type PNG, JPG, JPEG
+ * ExifReader contains all methods to get EXIF data of an image
  */
 public class ExifReader {
     private File imageFile;
@@ -31,6 +31,7 @@ public class ExifReader {
     }
 
     /**
+     * Returns the name of the image
      * @return String The name of the current image
      * @throws FileNotFoundException
      * @throws IllegalArgumentException
@@ -52,6 +53,7 @@ public class ExifReader {
      * @throws ImageProcessingException 
      * @throws IOException 
      */
+    
     public HashMap<String, String> getExif() throws IllegalArgumentException, ImageProcessingException, IOException {
         if (!imageFile.isFile()) {
             throw new FileNotFoundException("The path provided does not lead to an image.");

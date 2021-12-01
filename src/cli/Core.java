@@ -25,7 +25,7 @@ public class Core {
 	 * Method to print the help content.
 	 */
     public void printHelp() {
-        System.out.println("\n\n"
+        System.out.println("\n"
         	+ "List of the existing commands\n\n"
         	+ "Use java -jar cli.jar\n"
         	+ "[-h or --help] Provide description of the available options for the application.\n"

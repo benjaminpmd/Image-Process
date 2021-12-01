@@ -24,6 +24,9 @@ class Cli {
 			if ((args[0].equals("-h")) || (args[0].equals("--help"))) {
 				core.printHelp();
 			}
+			else if ((args[0].equals("-d")) || (args[0].equals("-f"))) {
+				System.err.println("Error: An argument is missing. You can check available options using -h or --help");
+			}
 			else {
 				System.err.println("Error: unknown option \"" + args[0] + "\". You can check available options using -h or --help");
 			}
