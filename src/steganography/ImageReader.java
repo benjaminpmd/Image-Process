@@ -1,40 +1,36 @@
 package steganography;
 
-import java.nio.file.Files;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.awt.Color;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 
-/**
- * @author benjamin
- *
- */
-public class ImageReader {
-	private File file;
-	private byte[] bytes;
+public class ImageReader extends Image {
+    public ImageReader(String path) throws IOException {
+        super(path);
+    }
 
-	public ImageReader(String path) throws IOException {
-		file = new File(path);
-		bytes = Files.readAllBytes(file.toPath());
-	}
-	
-	public void printBytes() {
-		for (int i=0; i<bytes.length; i++) {
-			System.out.println(bytes[i]);
-		}
-	}
-	
-	public void print2() throws IOException {
-		BufferedImage img = ImageIO.read(file);
-		for (int i=0; i < img.getWidth(); i++) {
-			for (int j=0; j < img.getHeight(); j++) {
-				int RGBA = img.getRGB(i, j);
-				System.out.println(RGBA);
+    public String readMessage() {
+		String message = "";
+		String octet = "";
+		int indexOctet = 0;
+		for (int i = 0; i < imageWidth; i++) {
+			for (int j = 0; j < imageHeight; j++) {
+				indexOctet++;
+				Color pixelColor = new Color(bufferedImage.getRGB(i, j));
+				int green = pixelColor.getGreen();
+				String binaryGreen = Integer.toBinaryString(green);
+				octet += binaryGreen.substring(binaryGreen.length()-1);
+				if (indexOctet == 8) {
+					message += String.valueOf((char) Integer.parseInt(octet, 2));
+					octet = "";
+					indexOctet = 0;
+                	if (message.length() >= stopKey.length()) {
+                    	if (message.substring(message.length()-stopKey.length()).equals(stopKey)) {
+							return message.substring(0, message.length()-stopKey.length());
+						}
+                	}
+				}
 			}
 		}
-	}
-	public byte[] getBytes() {
-		return bytes;
+		return message;
 	}
 }

@@ -9,6 +9,7 @@ import com.drew.imaging.ImageProcessingException;
 
 import exif.ExifReader;
 import explorer.FileLister;
+import steganography.*;
 
 /**
  * This class contains all the methods that manages the cli outputs
@@ -79,6 +80,29 @@ public class Core {
 			System.err.println("The path provived does not lead to a directory.");
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getMessage());
+		}
+	}
+
+	public void hideMessage(String path, String message) {
+		try {
+			ImageWriter writer = new ImageWriter(path);
+			writer.hideMessage(message);
+			boolean succes = writer.saveImage();
+			if (succes) {
+				System.out.println("Message succesfully hidden in the image.");
+			}
+			else System.out.println("Error: image update have failed.");
+		} catch (IOException e) {
+			System.err.println("Error: Image data retrieval have failed.");
+		}
+	}
+
+	public void readMessage(String path) {
+		try {
+			ImageReader reader = new ImageReader(path);
+			System.out.println(reader.readMessage());
+		} catch (IOException e) {
+			System.err.println("Error: Image data retrieval have failed.");
 		}
 	}
 }
