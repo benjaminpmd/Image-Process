@@ -9,6 +9,7 @@ public abstract class Image {
 	File imageFile;
 	String imageType;
 	BufferedImage bufferedImage;
+	int[][] pixels;
 	int imageWidth;
 	int imageHeight;
 	String stopKey = "//";
@@ -19,6 +20,16 @@ public abstract class Image {
 		bufferedImage = ImageIO.read(imageFile);
 		imageWidth = bufferedImage.getTileWidth();
 		imageHeight = bufferedImage.getTileHeight();
+		pixels = new int[imageWidth][imageHeight];
+		extract();
+	}
+
+	private void extract() {
+		for (int i = 0; i < imageWidth; i++) {
+			for (int j = 0; j < imageHeight; j++) {
+				pixels[i][j] = bufferedImage.getRGB(i, j);
+			}
+		}
 	}
 
 	public File getImageFile() {

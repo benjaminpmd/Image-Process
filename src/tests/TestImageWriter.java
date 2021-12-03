@@ -8,13 +8,11 @@ public class TestImageWriter {
 	public static void main(String[] args) {
 		try {
 			System.out.println("=============WRITING=========");
-			String message = "Hello World";
-			ImageWriter writer = new ImageWriter("build/T.png");
+			String message = "QUELLE JOIE oui";
+			ImageWriter writer = new ImageWriter("test.png");
 			System.out.println("Hidding message: " + message);
 			writer.hideMessage(message);
-			ImageWriter w = new ImageWriter("build/T.png");
-			w.setBufferedImage(writer.getBufferedImage());
-			w.saveImage();
+			writer.saveImage();
 			//writer.updateImage();
 			System.out.println("message successfully hidden.");
 		} catch (IOException e) {

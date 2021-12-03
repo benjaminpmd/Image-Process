@@ -15,7 +15,7 @@ public class ImageReader extends Image {
 		for (int i = 0; i < imageWidth; i++) {
 			for (int j = 0; j < imageHeight; j++) {
 				indexOctet++;
-				Color pixelColor = new Color(bufferedImage.getRGB(i, j));
+				Color pixelColor = new Color(pixels[i][j]);
 				int green = pixelColor.getGreen();
 				String binaryGreen = Integer.toBinaryString(green);
 				octet += binaryGreen.substring(binaryGreen.length()-1);
