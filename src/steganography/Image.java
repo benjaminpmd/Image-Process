@@ -4,32 +4,32 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import explorer.TypeChecker;
 
+/**
+ * Class containing all attributes needed to hide or read hidden message in pixels bits.
+ * 
+ * @author Benjamin PAUMARD, Alice MABILLE
+ * @since December 1st 2021
+ * @version 2021.12.03 (0.9.0)
+ */
 public abstract class Image {
 	File imageFile;
 	String imageType;
 	BufferedImage bufferedImage;
-	int[][] pixels;
 	int imageWidth;
 	int imageHeight;
+	String beginKey = "*";
 	String stopKey = "//";
 
-	public Image(String path) throws IOException {
+	public Image(String path) throws IOException, IllegalArgumentException {
+		TypeChecker typeChecker = new TypeChecker();
+		if (!typeChecker.isImage(path)) throw new IllegalArgumentException("The path does not lead to an image");
 		imageFile = new File(path);
-		imageType = imageFile.getName().substring(imageFile.getName().length()-3);
+		imageType = typeChecker.getMimeType(path);
 		bufferedImage = ImageIO.read(imageFile);
 		imageWidth = bufferedImage.getTileWidth();
 		imageHeight = bufferedImage.getTileHeight();
-		pixels = new int[imageWidth][imageHeight];
-		extract();
-	}
-
-	private void extract() {
-		for (int i = 0; i < imageWidth; i++) {
-			for (int j = 0; j < imageHeight; j++) {
-				pixels[i][j] = bufferedImage.getRGB(i, j);
-			}
-		}
 	}
 
 	public File getImageFile() {
@@ -39,11 +39,7 @@ public abstract class Image {
 	public BufferedImage getBufferedImage() {
 		return bufferedImage;
 	}
-	
-	public void setBufferedImage(BufferedImage bufferedImage) {
-		this.bufferedImage = bufferedImage;
-	}
-	
+
 	public int getImageWidth() {
 		return imageWidth;
 	}

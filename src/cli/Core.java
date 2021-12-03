@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 import com.drew.imaging.ImageProcessingException;
 
@@ -89,9 +90,11 @@ public class Core {
 			writer.hideMessage(message);
 			boolean succes = writer.saveImage();
 			if (succes) {
-				System.out.println("Message succesfully hidden in the image.");
+				System.out.println("Message succesfully hidden in the image: " + path);
 			}
 			else System.out.println("Error: image update have failed.");
+		} catch (NoSuchElementException e) {
+			System.err.println("Error: This image does not contain any message.");
 		} catch (IOException e) {
 			System.err.println("Error: Image data retrieval have failed.");
 		}

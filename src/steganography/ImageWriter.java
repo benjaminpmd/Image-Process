@@ -1,11 +1,10 @@
 package steganography;
 
-
 import java.io.File;
 import java.io.IOException;
-import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 
 public class ImageWriter extends Image {
 	public ImageWriter(String path) throws IOException {
@@ -25,32 +24,26 @@ public class ImageWriter extends Image {
         return binaryMessage;
     }
 
-    public boolean hideMessage(String message) throws IOException {
-        message += stopKey;
+    public void hideMessage(String message) throws IOException {
+        message = beginKey + message + stopKey;
         String binaryMessage = stringToBinary(message);
+        System.out.println(binaryMessage);
         int index = 0;
         for (int i = 0; i < imageWidth; i++) {
             for (int j = 0; j < imageHeight; j++) {
-                Color pixelColor = new Color(pixels[i][j]);
-                int green = pixelColor.getGreen();
-                String binaryGreen = Integer.toBinaryString(green);
-                String newBinaryGreen = newLsbValue(binaryGreen, binaryMessage.charAt(index));
-                while (newBinaryGreen.length() < 8) {
-                    newBinaryGreen = '0' + newBinaryGreen;
-                }
+                Color pixelColor = new Color(bufferedImage.getRGB(i, j));
+                String binaryBlue = Integer.toBinaryString(pixelColor.getBlue());
+                String newBinaryBlue = newLsbValue(binaryBlue, binaryMessage.charAt(index));
                 index++;
-                int newGreen = Integer.parseInt(newBinaryGreen, 2);
-                Color newPixelColor = new Color(pixelColor.getRed(), newGreen, pixelColor.getBlue(), pixelColor.getAlpha());
-                System.out.println(Integer.toBinaryString(pixelColor.getRGB()) + " : " + Integer.toBinaryString(newPixelColor.getRGB()));
-                pixels[i][j] = newPixelColor.getRGB();
+                int newBlue = Integer.parseInt(newBinaryBlue, 2);
+                Color newPixelColor = new Color(pixelColor.getRed(), pixelColor.getGreen(), newBlue);
+                bufferedImage.setRGB(i, j, newPixelColor.getRGB());
                 if (index >= binaryMessage.length()) {
                     i = imageWidth;
                     j = imageHeight;
-                    return true;
                 }
             }
         }
-        return false;
     }
 
     public String newLsbValue(String initialValue, char binaryAddition) {
@@ -58,14 +51,13 @@ public class ImageWriter extends Image {
     }
 
     public boolean saveImage() throws IOException {
-        BufferedImage outputBuffer = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-        for (int i = 0; i < imageWidth; i++) {
-            for (int j = 0; j < imageHeight; j++) {
-                outputBuffer.setRGB(i, j, pixels[i][j]);
-                System.out.println(Integer.toBinaryString(outputBuffer.getRGB(i, j)) + " : " + Integer.toBinaryString(pixels[i][j]));
-            }
+        BufferedImage outputBufferedImage;
+        if (imageType.equals("jpg") | imageType.equals("jpeg")) {
+            outputBufferedImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+            outputBufferedImage.getGraphics().drawImage(bufferedImage, 0, 0, null);
         }
-        return ImageIO.write(outputBuffer, imageType, imageFile);
+        else outputBufferedImage = bufferedImage;
+        return ImageIO.write(outputBufferedImage, imageType, imageFile);
     }
 }
 
