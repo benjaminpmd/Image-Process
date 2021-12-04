@@ -7,8 +7,8 @@ import exif.ExifReader;
 public class TestExifReader {
     public static void main(String[] args) {
         HashMap<String, String> exifData;
-        ExifReader reader = new ExifReader("./src/tests/test.png");
         try {
+            ExifReader reader = new ExifReader("Hello.jpg");
             exifData = reader.getExif();
             for (String key: exifData.keySet()) {
                 System.out.println(key + " : " + exifData.get(key));

@@ -9,7 +9,7 @@ public class TestCliCore {
         core.printHelp();
 
         System.out.println("\n========== Test of Explorer display ==========");
-        core.printExplorer("./src/tests/assets/");
+        core.printExplorer("./src/tests/");
 
         System.out.println("\n========== Test of EXIF data display ==========");
         core.printExif("./src/tests/assets/img.png");
