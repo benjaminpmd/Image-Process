@@ -4,11 +4,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 import com.drew.imaging.ImageProcessingException;
 
 import exif.ExifReader;
 import explorer.FileLister;
+import steganography.*;
 
 /**
  * This class contains all the methods that manages the cli outputs
@@ -25,7 +27,7 @@ public class Core {
 	 * Method to print the help content.
 	 */
     public void printHelp() {
-        System.out.println("\n\n"
+        System.out.println("\n"
         	+ "List of the existing commands\n\n"
         	+ "Use java -jar cli.jar\n"
         	+ "[-h or --help] Provide description of the available options for the application.\n"
@@ -79,6 +81,31 @@ public class Core {
 			System.err.println("The path provived does not lead to a directory.");
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getMessage());
+		}
+	}
+
+	public void hideMessage(String path, String message) {
+		try {
+			ImageWriter writer = new ImageWriter(path);
+			writer.hideMessage(message);
+			boolean succes = writer.saveImage();
+			if (succes) {
+				System.out.println("Message succesfully hidden in the image: " + path);
+			}
+			else System.out.println("Error: image update have failed.");
+		} catch (NoSuchElementException e) {
+			System.err.println("Error: This image does not contain any message.");
+		} catch (IOException e) {
+			System.err.println("Error: Image data retrieval have failed.");
+		}
+	}
+
+	public void readMessage(String path) {
+		try {
+			ImageReader reader = new ImageReader(path);
+			System.out.println(reader.readMessage());
+		} catch (IOException e) {
+			System.err.println("Error: Image data retrieval have failed.");
 		}
 	}
 }

@@ -24,6 +24,9 @@ class Cli {
 			if ((args[0].equals("-h")) || (args[0].equals("--help"))) {
 				core.printHelp();
 			}
+			else if ((args[0].equals("-d")) || (args[0].equals("-f"))) {
+				System.err.println("Error: An argument is missing. You can check available options using -h or --help");
+			}
 			else {
 				System.err.println("Error: unknown option \"" + args[0] + "\". You can check available options using -h or --help");
 			}
@@ -42,7 +45,7 @@ class Cli {
 		else if (args.length == 3) {
 			if (args[0].equals("-f")) {
 				if (args[2].equals("-e")) {
-					// Call message extraction
+					core.readMessage(args[1]);
 				}
 				else {
 					System.err.println("Error: unknown option \"" + args[2] + "\". You can check available options using -h or --help");
@@ -51,11 +54,13 @@ class Cli {
 		}
 		else if (args.length == 4) {
 			if ((args[0].equals("-f")) && (args[2].equals("-s"))) {
+				core.hideMessage(args[1], args[3]);
 				// Call message insertion
 				// image path: (args[1])
 				// message: (args[3])
 			}
 			else if ((args[0].equals("-s")) && (args[2].equals("-f"))) {
+				core.hideMessage(args[3], args[1]);
 				// Call message insertion
 				// image path: (args[3])
 				// message: (args[1])

@@ -14,35 +14,40 @@ import com.drew.metadata.Tag;
 import explorer.TypeChecker;
 
 /**
- * @author @Benjamin PAUMARD, Alice MABILLE
- * @version 2021.11.23 (0.5.3b)
+ * @author Benjamin PAUMARD
+ * @version 2021.11.30 (0.7.0b)
  * @since November, 18th, 2021
- * ExifReader contains all methods to check the properties of an image of type PNG, JPG, JPEG
+ * ExifReader contains all methods to get EXIF data of an image
  */
 public class ExifReader {
     private File imageFile;
-    private HashMap<String, String> exifData;
-    private TypeChecker typeChecker;
+    private HashMap<String, String> exif;
+    private String[] requiredData =  {
+        "Image Width",
+        "Image Height", 
+        "Detected MIME Type",
+        "Color Type",
+        "Color Space",
+        "File Modified Date",
+        "File Size",
+        "Model",
+        "Date/Time",
+        "Expected File Name Extension",
+        "Detected File Type Name"
+    };
     
-    public ExifReader(String path) {
+    public ExifReader(String path) throws IllegalArgumentException, ImageProcessingException, IOException {
+        TypeChecker typeChecker;
         imageFile = new File(path);
-        exifData = new HashMap<String, String>();
+        exif = new HashMap<String, String>();
         typeChecker = new TypeChecker();
-    }
-
-    /**
-     * @return String The name of the current image
-     * @throws FileNotFoundException
-     * @throws IllegalArgumentException
-     */
-    public String getFilename() throws FileNotFoundException, IllegalArgumentException {
         if (!imageFile.isFile()) {
-            throw new FileNotFoundException();
+            throw new FileNotFoundException("The path provided does not lead to an image.");
         }
-        else if (!typeChecker.image(imageFile.getPath())) {
-            throw new IllegalArgumentException();
+        else if (!typeChecker.isImage(imageFile.getPath())) {
+            throw new IllegalArgumentException("The path provided does not lead to an image.");
         }
-        return imageFile.getName();
+        extractExif();
     }
 
     /**
@@ -52,21 +57,7 @@ public class ExifReader {
      * @throws ImageProcessingException 
      * @throws IOException 
      */
-    public HashMap<String, String> getExif() throws IllegalArgumentException, ImageProcessingException, IOException {
-        if (!imageFile.isFile()) {
-            throw new FileNotFoundException("The path provided does not lead to an image.");
-        }
-        else if (!typeChecker.image(imageFile.getPath())) {
-            throw new IllegalArgumentException("The path provided does not lead to an image.");
-        }
-        String[] requiredData =  {
-        	"Image Width",
-            "Image Height", 
-            "Detected MIME Type",
-            "Color Type",
-            "Color Space",
-            "File Modified Date",
-        };
+    private void extractExif() throws IllegalArgumentException, ImageProcessingException, IOException {
         // Trying to get Metadata then storing them into a HashMap
         try {
             Metadata metadata = ImageMetadataReader.readMetadata(imageFile);
@@ -74,7 +65,7 @@ public class ExifReader {
                 for (Tag tag : dir.getTags()) {
                     for (String requiredTag : requiredData) {
                         if (requiredTag.equals(tag.getTagName())) {
-                            exifData.put(tag.getTagName(), tag.getDescription());
+                            exif.put(tag.getTagName(), tag.getDescription());
                         }
                     }
                 }
@@ -84,11 +75,20 @@ public class ExifReader {
         } catch (IOException e) {
         	throw new IOException(e.getMessage());
         }
-        if (exifData.get("Detected MIME Type").startsWith("image")) {
-            return exifData;
-        }
-        else {
+        if (!exif.get("Detected MIME Type").startsWith("image")) {
             throw new IllegalArgumentException("The path provided does not lead to an image.");
         }
+    }
+
+    public HashMap<String, String> getExif() {
+        return exif;
+    }
+
+    public String getFilename()  {
+        return imageFile.getName();
+    }
+
+    public String getMimeType() {
+        return exif.get("Detected File Type Name").toLowerCase();
     }
 }
