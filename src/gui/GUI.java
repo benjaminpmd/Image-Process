@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,9 +18,12 @@ public class GUI implements ActionListener {
 	private JPanel panel;
 	private JButton button;
 	private JLabel label;
+	private ImageIcon icon;
 	
 	public GUI() {
 		//initialisation des Jtrucs
+		icon = new ImageIcon("assets/Image4.png");
+		
 		frame = new JFrame("Stéganographe");
 		
 		button = new JButton("bouton");
@@ -39,6 +43,7 @@ public class GUI implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//il faut faire frame.pack() en dernier afin qu'il prenne en compte tous les éléments dans cette frame.
 		frame.pack();
+		frame.setIconImage(icon.getImage());
 		frame.setVisible(true);
 		
 	}
