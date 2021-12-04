@@ -27,7 +27,6 @@ public class ImageWriter extends Image {
     public void hideMessage(String message) throws IOException {
         message = beginKey + message + stopKey;
         String binaryMessage = stringToBinary(message);
-        System.out.println(binaryMessage);
         int index = 0;
         for (int i = 0; i < imageWidth; i++) {
             for (int j = 0; j < imageHeight; j++) {
