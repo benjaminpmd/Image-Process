@@ -6,8 +6,8 @@ import core.Core;
  * This class contains all the methods that manages the cli outputs
  * The main method of the cli calls the Core class methods
  * 
- * @author Benjamin PAUMARD
- * @version 2021.11.19d (0.1.2)
+ * @author Benjamin PAUMARD, Alice MABILLE
+ * @version 2021.12.08 (0.9.5)
  * @since November, 21th 2021
  */
 
@@ -23,7 +23,7 @@ class Cli {
 		}
 		else if (args.length == 1) {
 			if ((args[0].equals("-h")) || (args[0].equals("--help"))) {
-				core.printHelp();
+				System.err.println(core.getCliHelpContent());
 			}
 			else if ((args[0].equals("-d")) || (args[0].equals("-f"))) {
 				System.err.println("Error: An argument is missing. You can check available options using -h or --help");
@@ -34,10 +34,10 @@ class Cli {
 		}
 		else if (args.length == 2) {
 			if (args[0].equals("-f")) {
-				core.printExif(args[1]);
+				System.err.println(core.getExifContent(args[1]));
 			}
 			else if (args[0].equals("-d")) {
-				core.printExplorer(args[1]);
+				System.err.println(core.getExplorerContent(args[1]));
 			}
 			else {
 				System.err.println("Error: unknown option \"" + args[1] + "\". You can check available options using -h or --help");
@@ -46,7 +46,7 @@ class Cli {
 		else if (args.length == 3) {
 			if (args[0].equals("-f")) {
 				if (args[2].equals("-e")) {
-					core.readMessage(args[1]);
+					System.err.println(core.readMessage(args[1]));
 				}
 				else {
 					System.err.println("Error: unknown option \"" + args[2] + "\". You can check available options using -h or --help");
@@ -55,13 +55,13 @@ class Cli {
 		}
 		else if (args.length == 4) {
 			if ((args[0].equals("-f")) && (args[2].equals("-s"))) {
-				core.hideMessage(args[1], args[3]);
+				System.err.println(core.hideMessage(args[1], args[3]));
 				// Call message insertion
 				// image path: (args[1])
 				// message: (args[3])
 			}
 			else if ((args[0].equals("-s")) && (args[2].equals("-f"))) {
-				core.hideMessage(args[3], args[1]);
+				System.err.println(core.hideMessage(args[3], args[1]));
 				// Call message insertion
 				// image path: (args[3])
 				// message: (args[1])
