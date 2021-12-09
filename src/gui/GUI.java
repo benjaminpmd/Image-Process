@@ -1,5 +1,10 @@
 package gui;
 
+/**
+ * Graphic Interface ! Uses Core.
+ * @authors Alice MABILLE
+ */
+import cli.Core;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,7 +25,7 @@ import java.awt.event.WindowListener;
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	private JButton button;
+	private JButton readButton;
 	private JMenu menu = new JMenu("Fichier");
 	private JLabel label;
 	private ImageIcon icon;
@@ -28,13 +33,14 @@ public class GUI extends JFrame {
 	public GUI(String title) {
 		super(title);
 		init();
+		Core core = new Core();
 	}
 
 	private void init(){
 		//initialisation des Jtrucs
 		icon = new ImageIcon("assets/Image4.png");
 		
-		button = new JButton("bouton");
+		readButton = new JButton("Lire le message");
 		
 		label = new JLabel("Message");
 
@@ -43,18 +49,40 @@ public class GUI extends JFrame {
 		Container contentPane = getContentPane();
 		contentPane.setLayout(flow);
 		
-		//mise en page
-		contentPane.setLayout(new GridLayout(0, 1));
 		contentPane.add(menu);
-		contentPane.add(button);
+		contentPane.add(readButton);
+		readButton.addActionListener(new ReadMessageAction());
+		
 		contentPane.add(label);
 		
+		//Quelques polices, couleurs
+		Font font = new Font(Font.MONOSPACED, Font.ITALIC, 20);
+		label.setFont(font);
+		label.setForeground(Color.BLUE);
+		contentPane.setBackground(Color.PINK);
+				
+				
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//il faut faire this.pack() en dernier afin qu'il prenne en compte tous les �l�ments dans cette frame.
 		pack();
 		setIconImage(icon.getImage());
 		setVisible(true);
 		
+	}
+	
+	private class WriteMessageAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+
+	private class ReadMessageAction implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+
 	}
 
 	public static void main(String[] args) {
