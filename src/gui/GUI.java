@@ -4,7 +4,7 @@ package gui;
  * Graphic Interface ! Uses Core.
  * @authors Alice MABILLE
  */
-import cli.Core;
+import core.Core;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,10 +30,14 @@ public class GUI extends JFrame {
 	private JLabel label;
 	private ImageIcon icon;
 	
+	Core core = new Core();
+	
+	//for testing
+	private String path = "assets/Image4.png";
+	
 	public GUI(String title) {
 		super(title);
 		init();
-		Core core = new Core();
 	}
 
 	private void init(){
@@ -77,10 +81,9 @@ public class GUI extends JFrame {
 	}
 
 	private class ReadMessageAction implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			core.readMessage(path);
 		}
 
 	}
