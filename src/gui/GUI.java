@@ -11,11 +11,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JMenu;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -26,9 +29,11 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JButton readButton;
+	private JButton writeButton;
 	private JMenu menu = new JMenu("Fichier");
-	private JLabel label;
 	private ImageIcon icon;
+	private JTextArea messageToWrite;
+	private JTextArea messageFound;
 	
 	Core core = new Core();
 	
@@ -45,24 +50,39 @@ public class GUI extends JFrame {
 		icon = new ImageIcon("assets/Image4.png");
 		
 		readButton = new JButton("Lire le message");
+		writeButton = new JButton("Cacher le message dans l'image");
 		
-		label = new JLabel("Message");
+		messageFound = new JTextArea("Message");
+		//messageToWrite.setLineWrap(true);
+		//messageToWrite.setWrapStyleWord(true);
+		//messageToWrite.setEditable(false);
+		
+		messageToWrite = new JTextArea("Message à cacher");
+		messageToWrite.setLineWrap(true);
+		messageToWrite.setWrapStyleWord(true);
+		/*JScrollPane areaScrollPane = new JScrollPane(messageToWrite);
+		areaScrollPane.setVerticalScrollBarPolicy(
+		                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		areaScrollPane.setPreferredSize(new Dimension(250, 250));
+		*/
 
 		//Layout avec alignement
 		FlowLayout flow = new FlowLayout(FlowLayout.CENTER);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(flow);
 		
+		contentPane.add(messageToWrite);
 		contentPane.add(menu);
-		contentPane.add(readButton);
 		readButton.addActionListener(new ReadMessageAction());
-		
-		contentPane.add(label);
+		contentPane.add(readButton);
+		writeButton.addActionListener(new WriteMessageAction());
+		contentPane.add(writeButton);
+		contentPane.add(messageFound);
 		
 		//Quelques polices, couleurs
 		Font font = new Font(Font.MONOSPACED, Font.ITALIC, 20);
-		label.setFont(font);
-		label.setForeground(Color.BLUE);
+		messageFound.setFont(font);
+		messageFound.setForeground(Color.BLUE);
 		contentPane.setBackground(Color.PINK);
 				
 				
@@ -76,14 +96,14 @@ public class GUI extends JFrame {
 	private class WriteMessageAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			core.hideMessage(path, messageToWrite.getText());
 		}
 	}
 
 	private class ReadMessageAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			label.setText(core.readMessage(path));
+			messageFound.setText(core.readMessage(path));
 		}
 
 	}
