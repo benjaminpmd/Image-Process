@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.08 (0.9.5)
+ * @version 2021.12.09 (0.9.8)
  * @see Image
  */
 public class ImageWriter extends Image {
@@ -19,13 +19,12 @@ public class ImageWriter extends Image {
 
 	public ImageWriter(String path) throws IOException {
         super(path);
-        outputBufferedImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 	}
 
     /**
-     * Convert a string to a binary string
-     * @param message - String
-     * @return
+     * Convert a string to a binary string.
+     * @param message - String the message you want to convert.
+     * @return A String containing the binary value of the message.
      */
     public String stringToBinary(String message) {
         String binaryMessage = "";
@@ -40,14 +39,18 @@ public class ImageWriter extends Image {
         return binaryMessage;
     }
 
+    /**
+     * Takes a Integer value of a color and change last bits of the byte.
+     * @param colorValue - Integer value of a color (0 <= x <= 255).
+     * @param bits - bits to be encoded in the color value, will replace the last bits of a byte.
+     * @return the new Integer value for the color.
+     */
     public int changeLastBits(int colorValue, String bits) {
         String binaryColor = Integer.toBinaryString(colorValue);
-        if (binaryColor.length() <= 2) {
-            binaryColor += bits;
-        }
-        else {
-            binaryColor = binaryColor.substring(0, binaryColor.length()-bits.length()) + bits;
-        }
+        while (binaryColor.length() < 8) {
+			binaryColor = 0 + binaryColor;
+		}
+        binaryColor = binaryColor.substring(0, binaryColor.length()-bits.length()) + bits;
         return Integer.parseInt(binaryColor, 2);
     }
 
@@ -77,7 +80,7 @@ public class ImageWriter extends Image {
     }
 
     /**
-     * Save a modified image, if the image is not a PNG, a copy is created under PNG format to avoid compression.
+     * Update the image with the message idden inside, if the image is not a PNG, a copy is created under PNG format to avoid compression.
      * @return if the save is succesfull or not
      * @throws IOException - if the save fail
      */

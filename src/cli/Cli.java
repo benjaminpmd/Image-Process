@@ -7,7 +7,7 @@ import core.Core;
  * The main method of the cli calls the Core class methods
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
- * @version 2021.12.08 (0.9.5)
+ * @version 2021.12.09 (0.9.8)
  * @since November, 21th 2021
  */
 
@@ -56,15 +56,9 @@ class Cli {
 		else if (args.length == 4) {
 			if ((args[0].equals("-f")) && (args[2].equals("-s"))) {
 				System.err.println(core.hideMessage(args[1], args[3]));
-				// Call message insertion
-				// image path: (args[1])
-				// message: (args[3])
 			}
 			else if ((args[0].equals("-s")) && (args[2].equals("-f"))) {
 				System.err.println(core.hideMessage(args[3], args[1]));
-				// Call message insertion
-				// image path: (args[3])
-				// message: (args[1])
 			}
 			else {
 				System.err.println("Error: unknown option \"" + args[2] + "\". You can check available options using -h or --help");

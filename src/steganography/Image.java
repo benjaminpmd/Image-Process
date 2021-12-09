@@ -7,11 +7,11 @@ import javax.imageio.ImageIO;
 import explorer.TypeChecker;
 
 /**
- * Class containing all attributes needed to hide or read hidden message in pixels bits.
+ * Class containing all attributes needed to manipulate image, get informations to store or retrieve message hidden inside.
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.08 (0.9.5)
+ * @version 2021.12.09 (0.9.7)
  */
 public abstract class Image {
 	File imageFile;

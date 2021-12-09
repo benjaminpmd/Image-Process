@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.08 (0.9.5)
+ * @version 2021.12.09 (0.9.7)
  * @see Image
  */
 public class ImageReader extends Image {
@@ -20,8 +20,9 @@ public class ImageReader extends Image {
 
 
 	/**
-	 * @param colorValue - Integer value of a color
-	 * @return the last 2 bits of the binary code of the color
+	 * Extract the last 2 bits of the binary value of a color.
+	 * @param colorValue - Integer value of a color (0 <= x <= 255).
+	 * @return the last 2 bits of the binary code of the color.
 	 */
 	public String lastBitsExtractor(int colorValue) {
 		String binaryColor = Integer.toBinaryString(colorValue);
@@ -31,10 +32,15 @@ public class ImageReader extends Image {
 		return binaryColor.substring(binaryColor.length()-2);
 	}
 
+	/**
+	 * Extract a character hidden in the last bits of colors in a pixel.
+	 * @param pixelValue - Integer value of a pixel color.
+	 * @return character hidden in the pixel.
+	 */
 	public char characterExtractor(int pixelValue) {
 		Color pixelColor = new Color(pixelValue, true);
-		String octet = lastBitsExtractor(pixelColor.getAlpha()) + lastBitsExtractor(pixelColor.getRed()) + lastBitsExtractor(pixelColor.getGreen()) + lastBitsExtractor(pixelColor.getBlue());
-		return (char) Integer.parseInt(octet, 2);
+		String byteValue = lastBitsExtractor(pixelColor.getAlpha()) + lastBitsExtractor(pixelColor.getRed()) + lastBitsExtractor(pixelColor.getGreen()) + lastBitsExtractor(pixelColor.getBlue());
+		return (char) Integer.parseInt(byteValue, 2);
 	}
 
 	/**

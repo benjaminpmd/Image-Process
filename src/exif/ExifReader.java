@@ -14,9 +14,9 @@ import com.drew.metadata.Tag;
 import explorer.TypeChecker;
 
 /**
- * This class contains all methods to get EXIF data of an image
+ * This class contains all methods to get EXIF data of an image.
  * @author Benjamin PAUMARD
- * @version 2021.12.08 (0.9.5)
+ * @version 2021.12.09 (1.0.0)
  * @since November 18th, 2021
  */
 public class ExifReader {

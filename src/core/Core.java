@@ -18,7 +18,7 @@ import steganography.ImageWriter;
  * The main method of the cli calls the Core class methods
  * 
  * @authors Alice MABILLE, Benjamin PAUMARD
- * @version 2021.12.08 (0.9.5)
+ * @version 2021.12.09 (0.9.7)
  * @since November, 21th 2021
  */
 
@@ -110,12 +110,14 @@ public class Core {
 			writer.hideMessage(message);
 			boolean succes = writer.saveImage();
 			if (succes) {
-				retuString = "Message succesfully hidden in the image: " + path;
+				retuString = "Message succesfully hidden";
 				if (!writer.getImageType().equals("png")) {
 					retuString += "\nWARNING: due to compression limitation, in order to hide a message, a PNG image of the same name have been created.";
 				}
 			}
 			else retuString = "Error: image update have failed.";
+		} catch (IllegalArgumentException e) {
+			retuString = "Error: The path provived does not lead to an image.";
 		} catch (IOException e) {
 			retuString = "Error: Image data retrieval have failed.";
 		}
@@ -134,7 +136,7 @@ public class Core {
 			ImageReader reader = new ImageReader(path);
 			retuString = reader.readMessage();
 		} catch (IllegalArgumentException e) {
-			retuString = "Error: This image is not a PNG image.";
+			retuString = "Error: The file provided is not correct. Make sure your image exists and is a png file.";
 		} catch (NoSuchElementException e) {
 			retuString = "Error: This image does not contain any message.";
 		} catch (IOException e) {
