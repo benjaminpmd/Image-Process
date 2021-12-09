@@ -6,56 +6,59 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JMenu;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 
-public class GUI implements ActionListener {
-	
-	private JFrame frame;
-	private JPanel panel;
+public class GUI extends JFrame {
+	private static final long serialVersionUID = 1L;
+
 	private JButton button;
+	private JMenu menu = new JMenu("Fichier");
 	private JLabel label;
 	private ImageIcon icon;
 	
-	public GUI() {
+	public GUI(String title) {
+		super(title);
+		init();
+	}
+
+	private void init(){
 		//initialisation des Jtrucs
 		icon = new ImageIcon("assets/Image4.png");
 		
-		frame = new JFrame("Stéganographe");
-		
 		button = new JButton("bouton");
-		button.addActionListener(this);
 		
 		label = new JLabel("Message");
-		
-		panel = new JPanel();
+
+		//Layout avec alignement
+		FlowLayout flow = new FlowLayout(FlowLayout.CENTER);
+		Container contentPane = getContentPane();
+		contentPane.setLayout(flow);
 		
 		//mise en page
-		panel.setBorder(BorderFactory.createEmptyBorder(300, 300, 100, 300));
-		panel.setLayout(new GridLayout(0, 1));
-		panel.add(button);
-		panel.add(label);
+		contentPane.setLayout(new GridLayout(0, 1));
+		contentPane.add(menu);
+		contentPane.add(button);
+		contentPane.add(label);
 		
-		frame.add(panel, BorderLayout.CENTER);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//il faut faire frame.pack() en dernier afin qu'il prenne en compte tous les éléments dans cette frame.
-		frame.pack();
-		frame.setIconImage(icon.getImage());
-		frame.setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//il faut faire this.pack() en dernier afin qu'il prenne en compte tous les ï¿½lï¿½ments dans cette frame.
+		pack();
+		setIconImage(icon.getImage());
+		setVisible(true);
 		
 	}
 
 	public static void main(String[] args) {
-		new GUI();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		new GUI("Stéganographe");
 	}
 
 }
