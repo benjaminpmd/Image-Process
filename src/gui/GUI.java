@@ -83,7 +83,7 @@ public class GUI extends JFrame {
 	private class ReadMessageAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			core.readMessage(path);
+			label.setText(core.readMessage(path));
 		}
 
 	}

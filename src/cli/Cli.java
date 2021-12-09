@@ -1,5 +1,6 @@
 package cli;
 
+import core.Core;
 
 /**
  * This class contains all the methods that manages the cli outputs
