@@ -14,10 +14,10 @@ import com.drew.metadata.Tag;
 import explorer.TypeChecker;
 
 /**
+ * This class contains all methods to get EXIF data of an image
  * @author Benjamin PAUMARD
- * @version 2021.11.30 (0.7.0b)
- * @since November, 18th, 2021
- * ExifReader contains all methods to get EXIF data of an image
+ * @version 2021.12.08 (0.9.5)
+ * @since November 18th, 2021
  */
 public class ExifReader {
     private File imageFile;
@@ -52,7 +52,7 @@ public class ExifReader {
 
     /**
      * Returns the EXIF data the image passed during the creation of the ExifReader object.
-     * @return HashMap<String, String> The EXIF data of an image.
+     * @return HashMap<String, String> - The EXIF data of an image.
      * @throws IllegalArgumentException
      * @throws ImageProcessingException 
      * @throws IOException 

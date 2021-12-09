@@ -11,7 +11,7 @@ import explorer.TypeChecker;
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.03 (0.9.0)
+ * @version 2021.12.08 (0.9.5)
  */
 public abstract class Image {
 	File imageFile;
@@ -21,6 +21,7 @@ public abstract class Image {
 	int imageHeight;
 	String beginKey = "*";
 	String stopKey = "//";
+	String path;
 
 	public Image(String path) throws IOException, IllegalArgumentException {
 		TypeChecker typeChecker = new TypeChecker();
@@ -30,6 +31,7 @@ public abstract class Image {
 		bufferedImage = ImageIO.read(imageFile);
 		imageWidth = bufferedImage.getTileWidth();
 		imageHeight = bufferedImage.getTileHeight();
+		this.path = path;
 	}
 
 	public File getImageFile() {
@@ -46,5 +48,9 @@ public abstract class Image {
 
 	public int getImageHeight() {
 		return imageHeight;
+	}
+
+	public String getImageType() {
+		return imageType;
 	}
 }

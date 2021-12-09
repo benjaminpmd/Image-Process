@@ -1,12 +1,12 @@
 package explorer;
 
-/**
- * @author Alice MABILLE
- */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+/**
+ * @author Alice MABILLE
+ */
 public class FileLister {
 	private String path;
 	private ArrayList<String> files;

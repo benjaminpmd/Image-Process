@@ -31,12 +31,11 @@ public class TypeChecker {
 	}
 
 	public String getType(String path) {
-		for(int i=0; i<imageTypes.length; i++){
-			if (path.endsWith(imageTypes[i]) | path.endsWith(imageTypes[i].toUpperCase())){
-				return imageTypes[i].substring(1);
-			}
+		try {
+			return path.substring(path.length()-3).toLowerCase();
+		} catch (Exception e) {
+			return "no type";
 		}
-		return null;
 	}
 
 	public String getMimeType(String path) {
