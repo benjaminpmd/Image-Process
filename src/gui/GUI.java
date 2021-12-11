@@ -8,12 +8,17 @@ import core.Core;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,12 +35,17 @@ public class GUI extends JFrame {
 
 	private JButton readButton;
 	private JButton writeButton;
-	private JMenu menu = new JMenu("Fichier");
 	private ImageIcon icon;
 	private JTextArea messageToWrite;
 	private JTextArea messageFound;
 	
-	Core core = new Core();
+	private JMenu menuFichier, menuEdition, menuAffichage, menuAide;
+	private JMenuItem ouvrir, recents, enregistrer, enregistrer_sous, lire, ecrire, voirAide;
+	private JCheckBoxMenuItem imgVisibleBtn; 
+	private JMenuBar menuBar = new JMenuBar();
+	private JPopupMenu menuPop = new JPopupMenu();
+	
+	private Core core = new Core();
 	
 	//for testing
 	private String path = "assets/Image4.png";
@@ -65,25 +75,56 @@ public class GUI extends JFrame {
 		                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		areaScrollPane.setPreferredSize(new Dimension(250, 250));
 		*/
+		
+		menuFichier = new JMenu("Fichier");
+		menuEdition = new JMenu("Edition");
+		menuAffichage = new JMenu("Affichage");
+		menuAide = new JMenu("Aide");
+		ouvrir = new JMenuItem("Ouvrir...");
+		recents = new JMenuItem("Récents");
+		enregistrer = new JMenuItem("Enregistrer");
+		enregistrer_sous = new JMenuItem("Enregistrer sous...");
+		lire = new JMenuItem("Lire le message");
+		ecrire = new JMenuItem("Ecrire un message...");
+		imgVisibleBtn = new JCheckBoxMenuItem("Image visible");
+		voirAide = new JMenuItem("Page d'aide");
 
 		//Layout avec alignement
 		FlowLayout flow = new FlowLayout(FlowLayout.CENTER);
-		Container contentPane = getContentPane();
-		contentPane.setLayout(flow);
+		setLayout(flow);
 		
-		contentPane.add(messageToWrite);
-		contentPane.add(menu);
+		//this.getContentPane().add(everything);
+		add(messageToWrite);
 		readButton.addActionListener(new ReadMessageAction());
-		contentPane.add(readButton);
+		add(readButton);
 		writeButton.addActionListener(new WriteMessageAction());
-		contentPane.add(writeButton);
-		contentPane.add(messageFound);
+		add(writeButton);
+		add(messageFound);
 		
-		//Quelques polices, couleurs
+		menuFichier.add(ouvrir);
+		menuFichier.add(recents);
+		menuFichier.add(enregistrer);
+		menuFichier.add(enregistrer_sous);
+		menuEdition.add(lire);
+		menuEdition.add(ecrire);
+		menuAffichage.add(imgVisibleBtn);
+		menuBar.add(menuFichier);
+		menuBar.add(menuEdition);
+		menuBar.add(menuAffichage);
+		menuBar.add(menuAide);
+		setJMenuBar(menuBar);
+		
+		
+		//pas compatible avec menubar??
+		/*menuPop.add(menuFichier);
+		menuPop.add(menuEdition);
+		menuPop.add(menuAffichage);
+		menuPop.add(menuAide);
+		add(menuPop);
+		*/
+		
 		Font font = new Font(Font.MONOSPACED, Font.ITALIC, 20);
 		messageFound.setFont(font);
-		messageFound.setForeground(Color.BLUE);
-		contentPane.setBackground(Color.PINK);
 				
 				
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
