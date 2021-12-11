@@ -41,6 +41,12 @@ public class Core {
         	+ "You also can run the graphical version of the application by using java -jar gui.jar\n"
 		);
     }
+    
+    public String getGUIHelp() {
+        return ("\n"
+        	+ " Si tu passes ta vie à regretter le bon vieux temps, le bon jeune temps va te passer sous le nez, maaan."
+		);
+    }
 
     /**
 	 * Get a list of some of the EXIF data of the provided image.

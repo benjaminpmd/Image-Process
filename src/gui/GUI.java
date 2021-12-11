@@ -32,12 +32,14 @@ import java.awt.event.WindowListener;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
-
+	
+	private Core core = new Core();
+	
 	private JButton readButton;
 	private JButton writeButton;
 	private ImageIcon icon;
-	private JTextArea messageToWrite;
-	private JTextArea messageFound;
+	private JTextArea messageToWrite, messageFound;
+	private JTextArea helpDisplay = new JTextArea(core.getGUIHelp());
 	
 	private JMenu menuFichier, menuEdition, menuAffichage, menuAide;
 	private JMenuItem ouvrir, recents, enregistrer, enregistrer_sous, lire, ecrire, voirAide;
@@ -45,8 +47,7 @@ public class GUI extends JFrame {
 	private JMenuBar menuBar = new JMenuBar();
 	private JPopupMenu menuPop = new JPopupMenu();
 	
-	private Core core = new Core();
-	
+
 	//for testing
 	private String path = "assets/Image4.png";
 	
@@ -76,6 +77,9 @@ public class GUI extends JFrame {
 		areaScrollPane.setPreferredSize(new Dimension(250, 250));
 		*/
 		
+		helpDisplay.setVisible(false);
+		add(helpDisplay);
+		
 		menuFichier = new JMenu("Fichier");
 		menuEdition = new JMenu("Edition");
 		menuAffichage = new JMenu("Affichage");
@@ -101,6 +105,8 @@ public class GUI extends JFrame {
 		add(writeButton);
 		add(messageFound);
 		
+		voirAide.addActionListener(new DisplayHelpAction());
+		
 		menuFichier.add(ouvrir);
 		menuFichier.add(recents);
 		menuFichier.add(enregistrer);
@@ -108,6 +114,7 @@ public class GUI extends JFrame {
 		menuEdition.add(lire);
 		menuEdition.add(ecrire);
 		menuAffichage.add(imgVisibleBtn);
+		menuAide.add(voirAide);
 		menuBar.add(menuFichier);
 		menuBar.add(menuEdition);
 		menuBar.add(menuAffichage);
@@ -145,6 +152,14 @@ public class GUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			messageFound.setText(core.readMessage(path));
+		}
+
+	}
+	
+	private class DisplayHelpAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			helpDisplay.setVisible(true);
 		}
 
 	}
