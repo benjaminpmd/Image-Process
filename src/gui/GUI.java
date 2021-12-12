@@ -37,6 +37,8 @@ public class GUI extends JFrame {
 	
 	private Core core = new Core();
 	
+	private JPanel rightPanel;
+	
 	private JButton readButton;
 	private JButton writeButton;
 	private ImageIcon icon;
@@ -49,6 +51,7 @@ public class GUI extends JFrame {
 	private JMenuBar menuBar = new JMenuBar();
 	private JPopupMenu menuPop = new JPopupMenu();
 	
+	private Dimension minSize = new Dimension(500, 500);
 
 	//for testing
 	private String path = "assets/Image4.png";
@@ -58,17 +61,12 @@ public class GUI extends JFrame {
 		init();
 	}
 
+	
 	private void init(){
+		getContentPane().setLayout(new BorderLayout());
+		
 		//initialisation des Jtrucs
 		icon = new ImageIcon("assets/Image4.png");
-		
-		readButton = new JButton("Lire le message");
-		writeButton = new JButton("Cacher le message dans l'image");
-		
-		messageFound = new JTextArea("Message");
-		//messageToWrite.setLineWrap(true);
-		//messageToWrite.setWrapStyleWord(true);
-		//messageToWrite.setEditable(false);
 		
 		messageToWrite = new JTextArea("Message à cacher");
 		messageToWrite.setLineWrap(true);
@@ -78,12 +76,26 @@ public class GUI extends JFrame {
 		                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		areaScrollPane.setPreferredSize(new Dimension(250, 250));
 		*/
+		readButton = new JButton("Lire le message");
+		writeButton = new JButton("Cacher le message dans l'image");
+		readButton.addActionListener(new ReadMessageAction());
+		writeButton.addActionListener(new WriteMessageAction());
+		rightPanel = new JPanel();
+		rightPanel.add(messageToWrite);
+		rightPanel.add(readButton);
+		rightPanel.add(writeButton);
+		
+		messageFound = new JTextArea("Message");
+		//messageToWrite.setLineWrap(true);
+		//messageToWrite.setWrapStyleWord(true);
+		//messageToWrite.setEditable(false);
+		
 		
 		helpDisplay.setLineWrap(true);
 		helpDisplay.setWrapStyleWord(true);
 		helpDisplay.setEditable(false);
 		helpDisplay.setVisible(false);
-		add(helpDisplay);
+		add(helpDisplay, BorderLayout.LINE_END);
 		
 		menuFichier = new JMenu("Fichier");
 		menuEdition = new JMenu("Edition");
@@ -98,17 +110,11 @@ public class GUI extends JFrame {
 		imgVisibleBtn = new JCheckBoxMenuItem("Image visible");
 		voirAide = new JCheckBoxMenuItem("Afficher l'aide");
 
-		//Layout avec alignement
-		FlowLayout flow = new FlowLayout(FlowLayout.CENTER);
-		setLayout(flow);
 		
 		//this.getContentPane().add(everything);
 		add(messageToWrite);
-		readButton.addActionListener(new ReadMessageAction());
-		add(readButton);
-		writeButton.addActionListener(new WriteMessageAction());
-		add(writeButton);
-		add(messageFound);
+		add(rightPanel, BorderLayout.CENTER);
+		add(messageFound, BorderLayout.PAGE_END);
 		
 		voirAide.addItemListener(new DisplayHelpAction());
 		
@@ -140,6 +146,7 @@ public class GUI extends JFrame {
 				
 				
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setMinimumSize(minSize);
 		pack();
 		setIconImage(icon.getImage());
 		setVisible(true);
