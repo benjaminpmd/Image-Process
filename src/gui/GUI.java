@@ -28,6 +28,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowListener;
 
 public class GUI extends JFrame {
@@ -77,6 +79,9 @@ public class GUI extends JFrame {
 		areaScrollPane.setPreferredSize(new Dimension(250, 250));
 		*/
 		
+		helpDisplay.setLineWrap(true);
+		helpDisplay.setWrapStyleWord(true);
+		helpDisplay.setEditable(false);
 		helpDisplay.setVisible(false);
 		add(helpDisplay);
 		
@@ -91,7 +96,7 @@ public class GUI extends JFrame {
 		lire = new JMenuItem("Lire le message");
 		ecrire = new JMenuItem("Ecrire un message...");
 		imgVisibleBtn = new JCheckBoxMenuItem("Image visible");
-		voirAide = new JMenuItem("Page d'aide");
+		voirAide = new JCheckBoxMenuItem("Afficher l'aide");
 
 		//Layout avec alignement
 		FlowLayout flow = new FlowLayout(FlowLayout.CENTER);
@@ -105,7 +110,7 @@ public class GUI extends JFrame {
 		add(writeButton);
 		add(messageFound);
 		
-		voirAide.addActionListener(new DisplayHelpAction());
+		voirAide.addItemListener(new DisplayHelpAction());
 		
 		menuFichier.add(ouvrir);
 		menuFichier.add(recents);
@@ -156,10 +161,13 @@ public class GUI extends JFrame {
 
 	}
 	
-	private class DisplayHelpAction implements ActionListener {
+	private class DisplayHelpAction implements ItemListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			helpDisplay.setVisible(true);
+		public void itemStateChanged(ItemEvent e) {
+			if (e.getStateChange() == ItemEvent.DESELECTED) {
+				helpDisplay.setVisible(false);
+			}
+			else helpDisplay.setVisible(true);
 		}
 
 	}
