@@ -6,9 +6,13 @@ package gui;
  */
 import core.Core;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,13 +35,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private Core core = new Core();
 	
-	private JPanel rightPanel;
+	private Container guiComponent;
 	
 	private JButton readButton;
 	private JButton writeButton;
@@ -53,6 +58,7 @@ public class GUI extends JFrame {
 	
 	private Dimension minSize = new Dimension(500, 500);
 
+	private JFileChooser fileChooser = new JFileChooser();
 	//for testing
 	private String path = "assets/Image4.png";
 	
@@ -63,9 +69,10 @@ public class GUI extends JFrame {
 
 	
 	private void init(){
-		getContentPane().setLayout(new BorderLayout());
 		
 		//initialisation des Jtrucs
+		guiComponent = getContentPane();
+		
 		icon = new ImageIcon("assets/Image4.png");
 		
 		messageToWrite = new JTextArea("Message à cacher");
@@ -76,32 +83,30 @@ public class GUI extends JFrame {
 		                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		areaScrollPane.setPreferredSize(new Dimension(250, 250));
 		*/
+		messageToWrite.setAlignmentX(LEFT_ALIGNMENT);
 		readButton = new JButton("Lire le message");
 		writeButton = new JButton("Cacher le message dans l'image");
 		readButton.addActionListener(new ReadMessageAction());
 		writeButton.addActionListener(new WriteMessageAction());
-		rightPanel = new JPanel();
-		rightPanel.add(messageToWrite);
-		rightPanel.add(readButton);
-		rightPanel.add(writeButton);
 		
 		messageFound = new JTextArea("Message");
-		//messageToWrite.setLineWrap(true);
-		//messageToWrite.setWrapStyleWord(true);
-		//messageToWrite.setEditable(false);
+		messageToWrite.setLineWrap(true);
+		messageToWrite.setWrapStyleWord(true);
+		messageToWrite.setEditable(false);
 		
 		
 		helpDisplay.setLineWrap(true);
 		helpDisplay.setWrapStyleWord(true);
 		helpDisplay.setEditable(false);
 		helpDisplay.setVisible(false);
-		add(helpDisplay, BorderLayout.LINE_END);
+		add(helpDisplay);
 		
 		menuFichier = new JMenu("Fichier");
 		menuEdition = new JMenu("Edition");
 		menuAffichage = new JMenu("Affichage");
 		menuAide = new JMenu("Aide");
 		ouvrir = new JMenuItem("Ouvrir...");
+		ouvrir.addActionListener(new ChooseFileAction());
 		recents = new JMenuItem("Récents");
 		enregistrer = new JMenuItem("Enregistrer");
 		enregistrer_sous = new JMenuItem("Enregistrer sous...");
@@ -109,13 +114,6 @@ public class GUI extends JFrame {
 		ecrire = new JMenuItem("Ecrire un message...");
 		imgVisibleBtn = new JCheckBoxMenuItem("Image visible");
 		voirAide = new JCheckBoxMenuItem("Afficher l'aide");
-
-		
-		//this.getContentPane().add(everything);
-		add(messageToWrite);
-		add(rightPanel, BorderLayout.CENTER);
-		add(messageFound, BorderLayout.PAGE_END);
-		
 		voirAide.addItemListener(new DisplayHelpAction());
 		
 		menuFichier.add(ouvrir);
@@ -141,7 +139,26 @@ public class GUI extends JFrame {
 		add(menuPop);
 		*/
 		
-		Font font = new Font(Font.MONOSPACED, Font.ITALIC, 20);
+		//this.getContentPane().add(everything);
+		//Lay out the label and scroll pane from top to bottom.
+		JPanel writingPane = new JPanel();
+		writingPane.setLayout(new BoxLayout(writingPane, BoxLayout.PAGE_AXIS));
+		writingPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		writingPane.add(writeButton);
+		writingPane.add(messageToWrite);
+
+		//Lay out the buttons from left to right.
+		JPanel readingPane = new JPanel();
+		readingPane.setLayout(new BoxLayout(readingPane, BoxLayout.PAGE_AXIS));
+		readingPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		readingPane.add(readButton);
+		readingPane.add(messageFound);
+
+		//Put everything together, using the content pane's BorderLayout.
+		add(writingPane, BorderLayout.LINE_START);
+		add(readingPane, BorderLayout.LINE_END);
+		
+		Font font = new Font(Font.MONOSPACED, Font.ITALIC, 15);
 		messageFound.setFont(font);
 				
 				
@@ -151,6 +168,17 @@ public class GUI extends JFrame {
 		setIconImage(icon.getImage());
 		setVisible(true);
 		
+	}
+	
+	private class ChooseFileAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int returnVal = fileChooser.showOpenDialog(guiComponent);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+				path=file.getPath();
+			}
+		}
 	}
 	
 	private class WriteMessageAction implements ActionListener {
