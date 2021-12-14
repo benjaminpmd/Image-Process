@@ -36,6 +36,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -50,17 +57,19 @@ public class GUI extends JFrame {
 	private JTextArea messageToWrite, messageFound;
 	private JTextArea helpDisplay = new JTextArea(core.getGUIHelp());
 	
-	private JMenu menuFichier, menuEdition, menuAffichage, menuAide;
-	private JMenuItem ouvrir, recents, enregistrer, enregistrer_sous, lire, ecrire, voirAide;
+	private JMenu menuFichier, recents, menuEdition, menuAffichage, menuAide;
+	private JMenuItem ouvrir, enregistrer, enregistrer_sous, lire, ecrire, voirAide;
 	private JCheckBoxMenuItem imgVisibleBtn; 
 	private JMenuBar menuBar = new JMenuBar();
 	private JPopupMenu menuPop = new JPopupMenu();
 	
-	private Dimension minSize = new Dimension(500, 500);
+	private Dimension minSize = new Dimension(800, 500);
 
 	private JFileChooser fileChooser = new JFileChooser();
 	//for testing
-	private String path = "assets/Image4.png";
+	private String path;
+	
+	private ArrayList<String> paths = new ArrayList<String>();
 	
 	public GUI(String title) {
 		super(title);
@@ -78,21 +87,22 @@ public class GUI extends JFrame {
 		messageToWrite = new JTextArea("Message à cacher");
 		messageToWrite.setLineWrap(true);
 		messageToWrite.setWrapStyleWord(true);
-		/*JScrollPane areaScrollPane = new JScrollPane(messageToWrite);
+		messageToWrite.setEditable(true);
+		JScrollPane areaScrollPane = new JScrollPane(messageToWrite);
 		areaScrollPane.setVerticalScrollBarPolicy(
 		                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		areaScrollPane.setPreferredSize(new Dimension(250, 250));
-		*/
 		messageToWrite.setAlignmentX(LEFT_ALIGNMENT);
+		
 		readButton = new JButton("Lire le message");
 		writeButton = new JButton("Cacher le message dans l'image");
 		readButton.addActionListener(new ReadMessageAction());
 		writeButton.addActionListener(new WriteMessageAction());
 		
 		messageFound = new JTextArea("Message");
-		messageToWrite.setLineWrap(true);
-		messageToWrite.setWrapStyleWord(true);
-		messageToWrite.setEditable(false);
+		messageFound.setLineWrap(true);
+		messageFound.setWrapStyleWord(true);
+		messageFound.setEditable(false);
 		
 		
 		helpDisplay.setLineWrap(true);
@@ -107,7 +117,12 @@ public class GUI extends JFrame {
 		menuAide = new JMenu("Aide");
 		ouvrir = new JMenuItem("Ouvrir...");
 		ouvrir.addActionListener(new ChooseFileAction());
-		recents = new JMenuItem("Récents");
+		recents = new JMenu("Récents");
+		paths.addAll(getRecentFiles());
+		for (int i=0; i<paths.size();i++) {
+			recents.add(paths.get(i));
+		}//non
+		
 		enregistrer = new JMenuItem("Enregistrer");
 		enregistrer_sous = new JMenuItem("Enregistrer sous...");
 		lire = new JMenuItem("Lire le message");
@@ -162,7 +177,7 @@ public class GUI extends JFrame {
 		messageFound.setFont(font);
 				
 				
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(exitOperation());
 		setMinimumSize(minSize);
 		pack();
 		setIconImage(icon.getImage());
@@ -170,6 +185,40 @@ public class GUI extends JFrame {
 		
 	}
 	
+	public ArrayList<String> getRecentFiles(){
+		ArrayList<String> temp = new ArrayList<String>();
+		try {
+			FileInputStream fis = new FileInputStream("cache/recentFilesData");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			temp = (ArrayList<String>) ois.readObject();
+			ois.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return temp;
+	}
+	
+	private int exitOperation() {
+		try {
+	        FileOutputStream fos = new FileOutputStream("cache/recentFilesData");
+	        ObjectOutputStream oos = new ObjectOutputStream(fos);
+	        oos.writeObject(paths);
+	        oos.close();
+	        fos.close();
+		}
+		catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+		return JFrame.EXIT_ON_CLOSE;
+	}
+
 	private class ChooseFileAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -177,6 +226,7 @@ public class GUI extends JFrame {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				path=file.getPath();
+				paths.add(path);
 			}
 		}
 	}
