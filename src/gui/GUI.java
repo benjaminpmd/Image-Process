@@ -54,11 +54,11 @@ public class GUI extends JFrame {
 	private JButton readButton;
 	private JButton writeButton;
 	private ImageIcon icon;
-	private JTextArea messageToWrite, messageFound;
+	private JTextArea messageToWrite, messageFound, metadata;
 	private JTextArea helpDisplay = new JTextArea(core.getGUIHelp());
 	
 	private JMenu menuFichier, recents, menuEdition, menuAffichage, menuAide;
-	private JMenuItem ouvrir, enregistrer, enregistrer_sous, lire, ecrire, voirAide;
+	private JMenuItem ouvrir, fichier1, fichier2, fichier3, fichier4, fichier5, fichier6, fichier7, fichier8, fichier9, fichier10, effacer, enregistrer, enregistrer_sous, lire, ecrire, voirAide;
 	private JCheckBoxMenuItem imgVisibleBtn; 
 	private JMenuBar menuBar = new JMenuBar();
 	private JPopupMenu menuPop = new JPopupMenu();
@@ -89,10 +89,14 @@ public class GUI extends JFrame {
 		messageToWrite.setWrapStyleWord(true);
 		messageToWrite.setEditable(true);
 		JScrollPane areaScrollPane = new JScrollPane(messageToWrite);
-		areaScrollPane.setVerticalScrollBarPolicy(
-		                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		areaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		areaScrollPane.setPreferredSize(new Dimension(250, 250));
 		messageToWrite.setAlignmentX(LEFT_ALIGNMENT);
+		
+		metadata = new JTextArea("metadata");
+		metadata.setLineWrap(true);
+		metadata.setWrapStyleWord(true);
+		metadata.setEditable(false);
 		
 		readButton = new JButton("Lire le message");
 		writeButton = new JButton("Cacher le message dans l'image");
@@ -112,22 +116,24 @@ public class GUI extends JFrame {
 		add(helpDisplay);
 		
 		menuFichier = new JMenu("Fichier");
-		menuEdition = new JMenu("Edition");
-		menuAffichage = new JMenu("Affichage");
-		menuAide = new JMenu("Aide");
 		ouvrir = new JMenuItem("Ouvrir...");
 		ouvrir.addActionListener(new ChooseFileAction());
-		recents = new JMenu("Récents");
+		recents = new JMenu("Fichiers récents");
 		paths.addAll(getRecentFiles());
-		for (int i=0; i<paths.size();i++) {
-			recents.add(paths.get(i));
-		}//non
-		
+
+		effacer = new JMenuItem("Effacer");
+		recents.add(effacer);		
 		enregistrer = new JMenuItem("Enregistrer");
 		enregistrer_sous = new JMenuItem("Enregistrer sous...");
+		
+		menuEdition = new JMenu("Edition");
 		lire = new JMenuItem("Lire le message");
 		ecrire = new JMenuItem("Ecrire un message...");
+		
+		menuAffichage = new JMenu("Affichage");
 		imgVisibleBtn = new JCheckBoxMenuItem("Image visible");
+		
+		menuAide = new JMenu("Aide");
 		voirAide = new JCheckBoxMenuItem("Afficher l'aide");
 		voirAide.addItemListener(new DisplayHelpAction());
 		
@@ -165,9 +171,10 @@ public class GUI extends JFrame {
 		//Lay out the buttons from left to right.
 		JPanel readingPane = new JPanel();
 		readingPane.setLayout(new BoxLayout(readingPane, BoxLayout.PAGE_AXIS));
-		readingPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		readingPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		readingPane.add(readButton);
 		readingPane.add(messageFound);
+		readingPane.add(metadata);
 
 		//Put everything together, using the content pane's BorderLayout.
 		add(writingPane, BorderLayout.LINE_START);
@@ -227,14 +234,20 @@ public class GUI extends JFrame {
 				File file = fileChooser.getSelectedFile();
 				path=file.getPath();
 				paths.add(path);
+				metadata.setText(core.getExifContent(path));
 			}
 		}
 	}
 	
 	private class WriteMessageAction implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			core.hideMessage(path, messageToWrite.getText());
+		public void actionPerformed(ActionEvent e) throws IllegalArgumentException {
+			if (!path.equals(null)) {
+				core.hideMessage(path, messageToWrite.getText());
+			}
+			else {
+				throw new IllegalArgumentException();
+			}
 		}
 	}
 
