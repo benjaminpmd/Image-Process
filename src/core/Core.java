@@ -44,7 +44,7 @@ public class Core {
     
     public String getGUIHelp() {
         return ("\n"
-        	+ " Si tu passes ta vie à regretter le bon vieux temps, le bon jeune temps va te passer sous le nez, maaan."
+        	+ " Veuillez ouvrir un fichier grâce au menu en haut à gauche avant de tenter de lire ou écrire un message."
 		);
     }
 
