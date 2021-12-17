@@ -53,7 +53,7 @@ public class GUI extends JFrame {
 	private JTextArea helpDisplay = new JTextArea(core.getGUIHelp());
 	
 	private JMenu menuFichier, recents, menuEdition, menuAffichage, menuAide;
-	private JMenuItem ouvrir, fichier0, fichier1, fichier2, effacer, enregistrer, enregistrer_sous, lire, ecrire, voirAide;
+	private JMenuItem ouvrir, fichier0, fichier1, fichier2, effacer, lire, ecrire, voirAide;
 	private JCheckBoxMenuItem imgVisibleBtn; 
 	private JMenuBar menuBar = new JMenuBar();
 	
@@ -154,13 +154,13 @@ public class GUI extends JFrame {
 		recents.add(fichier0);
 
 		effacer = new JMenuItem("Effacer");
-		recents.add(effacer);		
-		enregistrer = new JMenuItem("Enregistrer");
-		enregistrer_sous = new JMenuItem("Enregistrer sous...");
+		recents.add(effacer);
 		
 		menuEdition = new JMenu("Edition");
 		lire = new JMenuItem("Lire le message");
+		lire.addActionListener(new ReadMessageAction());
 		ecrire = new JMenuItem("Ecrire un message...");
+		ecrire.addActionListener(new WriteMessageAction());
 		
 		menuAffichage = new JMenu("Affichage");
 		imgVisibleBtn = new JCheckBoxMenuItem("Image visible");
@@ -171,8 +171,6 @@ public class GUI extends JFrame {
 		
 		menuFichier.add(ouvrir);
 		menuFichier.add(recents);
-		menuFichier.add(enregistrer);
-		menuFichier.add(enregistrer_sous);
 		menuEdition.add(lire);
 		menuEdition.add(ecrire);
 		menuAffichage.add(imgVisibleBtn);
