@@ -16,25 +16,20 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
-import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -58,10 +53,9 @@ public class GUI extends JFrame {
 	private JTextArea helpDisplay = new JTextArea(core.getGUIHelp());
 	
 	private JMenu menuFichier, recents, menuEdition, menuAffichage, menuAide;
-	private JMenuItem ouvrir, fichier1, fichier2, fichier3, fichier4, fichier5, fichier6, fichier7, fichier8, fichier9, fichier10, effacer, enregistrer, enregistrer_sous, lire, ecrire, voirAide;
+	private JMenuItem ouvrir, fichier0, fichier1, fichier2, effacer, enregistrer, enregistrer_sous, lire, ecrire, voirAide;
 	private JCheckBoxMenuItem imgVisibleBtn; 
 	private JMenuBar menuBar = new JMenuBar();
-	private JPopupMenu menuPop = new JPopupMenu();
 	
 	private Dimension minSize = new Dimension(800, 500);
 
@@ -70,12 +64,12 @@ public class GUI extends JFrame {
 	private String path;
 	
 	private ArrayList<String> paths = new ArrayList<String>();
+	private ArrayList<String> cachePaths = new ArrayList<String>();
 	
 	public GUI(String title) {
 		super(title);
 		init();
 	}
-
 	
 	private void init(){
 		
@@ -83,6 +77,25 @@ public class GUI extends JFrame {
 		guiComponent = getContentPane();
 		
 		icon = new ImageIcon("assets/Image4.png");
+		
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream("cache/recentFilesData.tmp");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			cachePaths = (ArrayList<String>) ois.readObject();
+			ois.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		messageToWrite = new JTextArea("Message à cacher");
 		messageToWrite.setLineWrap(true);
@@ -119,7 +132,26 @@ public class GUI extends JFrame {
 		ouvrir = new JMenuItem("Ouvrir...");
 		ouvrir.addActionListener(new ChooseFileAction());
 		recents = new JMenu("Fichiers récents");
-		paths.addAll(getRecentFiles());
+		switch (cachePaths.size()) {
+		case 1 :
+			fichier0 = new JMenuItem(cachePaths.get(0));
+			fichier0.addActionListener(new OpenFileAction(cachePaths.get(0)));
+		case 2 :
+			fichier0 = new JMenuItem(cachePaths.get(0));
+			fichier0.addActionListener(new OpenFileAction(cachePaths.get(0)));
+			fichier1 = new JMenuItem(cachePaths.get(1));
+			fichier1.addActionListener(new OpenFileAction(cachePaths.get(1)));
+		case 3 :
+			fichier0 = new JMenuItem(cachePaths.get(0));
+			fichier0.addActionListener(new OpenFileAction(cachePaths.get(0)));
+			fichier1 = new JMenuItem(cachePaths.get(1));
+			fichier1.addActionListener(new OpenFileAction(cachePaths.get(1)));
+			fichier2 = new JMenuItem(cachePaths.get(2));
+			fichier2.addActionListener(new OpenFileAction(cachePaths.get(2)));
+		}
+		recents.add(fichier2);
+		recents.add(fichier1);
+		recents.add(fichier0);
 
 		effacer = new JMenuItem("Effacer");
 		recents.add(effacer);		
@@ -151,24 +183,12 @@ public class GUI extends JFrame {
 		menuBar.add(menuAide);
 		setJMenuBar(menuBar);
 		
-		
-		//pas compatible avec menubar??
-		/*menuPop.add(menuFichier);
-		menuPop.add(menuEdition);
-		menuPop.add(menuAffichage);
-		menuPop.add(menuAide);
-		add(menuPop);
-		*/
-		
-		//this.getContentPane().add(everything);
-		//Lay out the label and scroll pane from top to bottom.
 		JPanel writingPane = new JPanel();
 		writingPane.setLayout(new BoxLayout(writingPane, BoxLayout.PAGE_AXIS));
 		writingPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		writingPane.add(writeButton);
 		writingPane.add(messageToWrite);
 
-		//Lay out the buttons from left to right.
 		JPanel readingPane = new JPanel();
 		readingPane.setLayout(new BoxLayout(readingPane, BoxLayout.PAGE_AXIS));
 		readingPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -184,46 +204,12 @@ public class GUI extends JFrame {
 		messageFound.setFont(font);
 				
 				
-		setDefaultCloseOperation(exitOperation());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize(minSize);
 		pack();
 		setIconImage(icon.getImage());
 		setVisible(true);
 		
-	}
-	
-	public ArrayList<String> getRecentFiles(){
-		ArrayList<String> temp = new ArrayList<String>();
-		try {
-			FileInputStream fis = new FileInputStream("cache/recentFilesData");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			temp = (ArrayList<String>) ois.readObject();
-			ois.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return temp;
-	}
-	
-	private int exitOperation() {
-		try {
-	        FileOutputStream fos = new FileOutputStream("cache/recentFilesData");
-	        ObjectOutputStream oos = new ObjectOutputStream(fos);
-	        oos.writeObject(paths);
-	        oos.close();
-	        fos.close();
-		}
-		catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-		return JFrame.EXIT_ON_CLOSE;
 	}
 
 	private class ChooseFileAction implements ActionListener {
@@ -235,7 +221,31 @@ public class GUI extends JFrame {
 				path=file.getPath();
 				paths.add(path);
 				metadata.setText(core.getExifContent(path));
+				FileOutputStream fos;
+				try {
+					fos = new FileOutputStream("cache/recentFilesData.tmp");
+					ObjectOutputStream oos = new ObjectOutputStream(fos);
+			        oos.writeObject(paths);
+			        oos.close();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
+		}
+	}
+	
+	private class OpenFileAction implements ActionListener {
+		public OpenFileAction(String path1) {
+			path=path1;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			metadata.setText(core.getExifContent(path));
 		}
 	}
 	
