@@ -4,26 +4,28 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 
 /**
  * Class used to read message contained in a PNG image
- * 
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.09 (0.9.8)
+ * @version 2021.12.15 (1.0.0)
  * @see Image
  */
 public class ImageWriter extends Image {
-    BufferedImage outputBufferedImage;
-
-	public ImageWriter(String path) throws IOException {
+    /**
+     * Constructor of the ImageWriter class
+     * @param path the path of the image you want to check and hide a message inside.
+     * @throws IOException if the image cannot be read
+     * @throws IllegalArgumentException if the extension of the file is not an image.
+     */
+	public ImageWriter(String path) throws IllegalArgumentException, IOException {
         super(path);
 	}
 
     /**
      * Convert a string to a binary string.
-     * @param message - String the message you want to convert.
+     * @param message String the message you want to convert.
      * @return A String containing the binary value of the message.
      */
     public String stringToBinary(String message) {
@@ -40,9 +42,9 @@ public class ImageWriter extends Image {
     }
 
     /**
-     * Takes a Integer value of a color and change last bits of the byte.
-     * @param colorValue - Integer value of a color (0 <= x <= 255).
-     * @param bits - bits to be encoded in the color value, will replace the last bits of a byte.
+     * Takes an Integer value of a color and change last bits of the byte.
+     * @param colorValue Integer value of a color between 0 and 255.
+     * @param bits bits to be encoded in the color value, will replace the last bits of a byte.
      * @return the new Integer value for the color.
      */
     public int changeLastBits(int colorValue, String bits) {
@@ -66,7 +68,7 @@ public class ImageWriter extends Image {
         for (int i = 0; i < imageWidth; i++) {
             for (int j = 0; j < imageHeight; j++) {
                 if (index < binaryMessage.length()) {
-                    Color pixelColor = new Color(bufferedImage.getRGB(i, j));
+                    Color pixelColor = new Color(bufferedImage.getRGB(i, j), true);
                     int alpha = changeLastBits(pixelColor.getAlpha(), binaryMessage.substring(index, index+2));
                     int red = changeLastBits(pixelColor.getRed(), binaryMessage.substring(index+2, index+4));
                     int green = changeLastBits(pixelColor.getGreen(), binaryMessage.substring(index+4, index+6));
@@ -80,16 +82,17 @@ public class ImageWriter extends Image {
     }
 
     /**
-     * Update the image with the message idden inside, if the image is not a PNG, a copy is created under PNG format to avoid compression.
-     * @return if the save is succesfull or not
-     * @throws IOException - if the save fail
+     * Update the image with the message hidden inside, if the image is not a PNG, a copy is created under PNG format to
+     * avoid compression.
+     * @return if the save is successful or not
+     * @throws IOException if the save fail
      */
     public boolean saveImage() throws IOException {
         if (imageType.equals("jpg") | imageType.equals("jpeg")) {
             File outputImageFile = new File(path.substring(0, path.length()-3) + "png");
             return ImageIO.write(bufferedImage, "png", outputImageFile);
         }
-        return ImageIO.write(bufferedImage, imageType, imageFile);
+        return ImageIO.write(bufferedImage, "png", imageFile);
     }
 }
 

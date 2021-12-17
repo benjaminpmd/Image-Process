@@ -17,12 +17,10 @@ import steganography.ImageWriter;
  * This class contains all the methods that manages the cli outputs
  * The main method of the cli calls the Core class methods
  * 
- * @authors Alice MABILLE, Benjamin PAUMARD
+ * @author Alice MABILLE, Benjamin PAUMARD
  * @version 2021.12.09 (0.9.7)
  * @since November, 21th 2021
  */
-
-
 public class Core {
 	/**
 	 * The help of the cli
@@ -39,6 +37,12 @@ public class Core {
         	+ "[-e] Extract a message from an image. (require -f option)\n"
         	+ "\n"
         	+ "You also can run the graphical version of the application by using java -jar gui.jar\n"
+		);
+    }
+
+	public String getGUIHelp() {
+        return ("\n"
+        	+ " Si tu passes ta vie à regretter le bon vieux temps, le bon jeune temps va te passer sous le nez, maaan."
 		);
     }
 

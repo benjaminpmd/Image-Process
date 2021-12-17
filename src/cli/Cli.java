@@ -10,7 +10,6 @@ import core.Core;
  * @version 2021.12.09 (0.9.8)
  * @since November, 21th 2021
  */
-
 class Cli {
 	/**
 	 * Static main method running the cli

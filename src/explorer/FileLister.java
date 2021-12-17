@@ -6,43 +6,31 @@ import java.util.ArrayList;
 
 /**
  * @author Alice MABILLE
+ * @version 1.0.0
  */
 public class FileLister {
 	private String path;
 	private ArrayList<String> files;
-	
+
+	/**
+	 * Constructor of the FileLister class.
+	 * @param path path of the file you want to check.
+	 */
 	public FileLister(String path) {
 	    this.path = path;
 	    files = new ArrayList<String>();
 	}
 
+	/**
+	 * If no path is provided, the current one will be used.
+	 */
 	public FileLister() {
-		//default path is current path
 	    this(".");
 	}
-	
-	/**
-	 * @return ArrayList<String> of all images in the directory and subdirectories.
-	 * @throws IllegalArgumentException
-	 * @throws FileNotFoundException
-	 */
-	public ArrayList<String> exploreImages() throws IllegalArgumentException, FileNotFoundException{
-		File file = new File(path);
-		if (file.isDirectory() && file.exists()){
-			listFilesInDirectory(file);
-		}
-		else if (!file.isDirectory()) {
-			throw new IllegalArgumentException(path + " is not a directory.");
-		}
-		// since we only explore, the following exceptions is not needed
-		else if(!file.exists()){
-			throw new FileNotFoundException("The " + path + " file does not exist.");
-		}
-		return files;
-	}
-	
+
 	/**
 	 * Recursively browses all subdirectories and adds all image files' paths in the files attribute.
+	 * @param directory a directory of type File.
 	 */
 	private void listFilesInDirectory(File directory) {
 		TypeChecker typeChecker = new TypeChecker();
@@ -58,7 +46,26 @@ public class FileLister {
 				else {
 					files.add(directory.getPath() + "/" + tempPath);
 				}
-            }
+			}
 		}
+	}
+	
+	/**
+	 * @return ArrayList<String> of all images in the directory and subdirectories.
+	 * @throws IllegalArgumentException in case the path is not a directory.
+	 * @throws FileNotFoundException in case the path does not exist at all.
+	 */
+	public ArrayList<String> exploreImages() throws IllegalArgumentException, FileNotFoundException{
+		File file = new File(path);
+		if (file.isDirectory() && file.exists()){
+			listFilesInDirectory(file);
+		}
+		else if (!file.isDirectory()) {
+			throw new IllegalArgumentException(path + " is not a directory.");
+		}
+		else if(!file.exists()){
+			throw new FileNotFoundException("The " + path + " file does not exist.");
+		}
+		return files;
 	}
 }

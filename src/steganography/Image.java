@@ -11,7 +11,7 @@ import explorer.TypeChecker;
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.09 (0.9.7)
+ * @version 2021.12.15 (1.0.0)
  */
 public abstract class Image {
 	File imageFile;
@@ -19,10 +19,16 @@ public abstract class Image {
 	BufferedImage bufferedImage;
 	int imageWidth;
 	int imageHeight;
-	String beginKey = "*";
-	String stopKey = "//";
+	String beginKey;
+	String stopKey;
 	String path;
 
+	/**
+	 * Constructor of the Image class
+	 * @param path path of the image
+	 * @throws IOException if the image could not be read.
+	 * @throws IllegalArgumentException if the extension of the file is not an image.
+	 */
 	public Image(String path) throws IOException, IllegalArgumentException {
 		TypeChecker typeChecker = new TypeChecker();
 		if (!typeChecker.isImage(path)) throw new IllegalArgumentException("The path does not lead to an image");
@@ -32,24 +38,13 @@ public abstract class Image {
 		imageWidth = bufferedImage.getTileWidth();
 		imageHeight = bufferedImage.getTileHeight();
 		this.path = path;
+		beginKey = "*";
+		stopKey = "//";
 	}
 
-	public File getImageFile() {
-		return imageFile;
-	}
-	
-	public BufferedImage getBufferedImage() {
-		return bufferedImage;
-	}
-
-	public int getImageWidth() {
-		return imageWidth;
-	}
-
-	public int getImageHeight() {
-		return imageHeight;
-	}
-
+	/**
+	 * @return the image MIME type.
+	 */
 	public String getImageType() {
 		return imageType;
 	}
