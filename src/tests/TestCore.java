@@ -16,10 +16,11 @@ public class TestCore {
 
         System.out.println("\n///////////////////////////////////////////////////////////////////////");
         System.out.println("MESSAGE HIDE");
-        System.out.println(c.hideMessage("./src/tests/assets/tests.png", "Hi, do you read me?"));
+        System.out.println(c.hideMessage("./src/tests/assets/image.JPG", "Hi, do you read me?"));
+        System.out.println(c.getExifContent("./src/tests/assets/image.jpg"));
 
         System.out.println("\n///////////////////////////////////////////////////////////////////////");
         System.out.println("MESSAGE READ");
-        System.out.println(c.readMessage("./src/tests/assets/tests.png"));
+        System.out.println(c.readMessage("./src/tests/assets/image.jpg"));
     }
 }

@@ -4,15 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 
 /**
  * Class used to read message contained in a PNG image
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.15 (1.0.0)
+ * @version 2021.12.19 (1.0.4)
  * @see Image
  */
 public class ImageWriter extends Image {
+    private BufferedImage outputBufferedImage;
+
     /**
      * Constructor of the ImageWriter class
      * @param path the path of the image you want to check and hide a message inside.
@@ -21,6 +24,7 @@ public class ImageWriter extends Image {
      */
 	public ImageWriter(String path) throws IllegalArgumentException, IOException {
         super(path);
+        outputBufferedImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 	}
 
     /**
@@ -75,7 +79,10 @@ public class ImageWriter extends Image {
                     int blue = changeLastBits(pixelColor.getBlue(), binaryMessage.substring(index+6, index+8));
                     index += 8;
                     Color newPixelColor = new Color(red, green, blue, alpha);
-                    bufferedImage.setRGB(i, j, newPixelColor.getRGB());
+                    outputBufferedImage.setRGB(i, j, newPixelColor.getRGB());
+                }
+                else {
+                    outputBufferedImage.setRGB(i, j, bufferedImage.getRGB(i, j));
                 }
             }
         }
@@ -83,16 +90,19 @@ public class ImageWriter extends Image {
 
     /**
      * Update the image with the message hidden inside, if the image is not a PNG, a copy is created under PNG format to
-     * avoid compression.
-     * @return if the save is successful or not
+     * avoid compression and enable transarency.
+     * @return boolean, if the save is successful or not
      * @throws IOException if the save fail
      */
     public boolean saveImage() throws IOException {
+        File outputImageFile;
         if (imageType.equals("jpg") | imageType.equals("jpeg")) {
-            File outputImageFile = new File(path.substring(0, path.length()-3) + "png");
-            return ImageIO.write(bufferedImage, "png", outputImageFile);
+            outputImageFile = new File(path.substring(0, path.length()-3) + "png");
         }
-        return ImageIO.write(bufferedImage, "png", imageFile);
+        else {
+            outputImageFile = imageFile;
+        }
+        return ImageIO.write(outputBufferedImage, "png", outputImageFile);
     }
 }
 

@@ -7,7 +7,7 @@ import core.Core;
  * The main method of the cli calls the Core class methods
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
- * @version 2021.12.09 (0.9.8)
+ * @version 2021.12.19 (1.0.0)
  * @since November, 21th 2021
  */
 class Cli {

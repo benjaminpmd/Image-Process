@@ -11,17 +11,18 @@ import explorer.TypeChecker;
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.15 (1.0.0)
+ * @version 2021.12.15 (1.0.1)
  */
 public abstract class Image {
-	File imageFile;
-	String imageType;
-	BufferedImage bufferedImage;
-	int imageWidth;
-	int imageHeight;
-	String beginKey;
-	String stopKey;
-	String path;
+	protected File imageFile;
+	protected String imageType;
+	protected BufferedImage bufferedImage;
+	protected int imageWidth;
+	protected int imageHeight;
+	protected String beginKey;
+	protected String stopKey;
+	protected String path;
+	
 
 	/**
 	 * Constructor of the Image class
