@@ -7,7 +7,7 @@ This application features the following options:
 * Directory scan for png, jpg and jpeg images
 * EXIF data display of an image
 * Steganography system
-  * Ride a message in an image. If you want to hide a message in a jpg image, the application will simply create a png copy of it to avoid compression.
+  * Write a message in an image. If you want to hide a message in a jpg image, the application will simply create a png copy of it to avoid compression.
   * Retrieve a message hidden in a png image.
 
 ## Cli version
