@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * Class used to read message contained in a PNG image
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.15 (1.0.0)
+ * @version 2021.12.15 (1.0.1)
  * @see Image
  */
 public class ImageReader extends Image {
@@ -19,7 +19,7 @@ public class ImageReader extends Image {
 	 */
     public ImageReader(String path) throws IllegalArgumentException, IOException {
         super(path);
-		if(!imageType.equals("png")) throw new IllegalArgumentException("Image is not a PNG file");
+		if(!getImageType().equals("png")) throw new IllegalArgumentException("Image is not a PNG file");
     }
 
 
@@ -58,9 +58,9 @@ public class ImageReader extends Image {
     public String readMessage() throws NoSuchElementException {
 		String message = "";
 		boolean messageExist = false;
-		for (int i = 0; i < imageWidth; i++) {
-			for (int j = 0; j < imageHeight; j++) {
-				message += characterExtractor(bufferedImage.getRGB(i, j));
+		for (int i = 0; i < getImageWidth(); i++) {
+			for (int j = 0; j < getImageHeight(); j++) {
+				message += characterExtractor(getBufferedImage().getRGB(i, j));
 				if (!messageExist) {
 					if (message.equals("*")) {
 						messageExist = true; // check if the first char indicate the presence of a message
@@ -69,8 +69,8 @@ public class ImageReader extends Image {
 						throw new NoSuchElementException("This image does not contains any message.");
 					}
 				}
-                if (message.endsWith(stopKey)) { // check if the last chars are the stop key
-					return message.substring(1, message.length()-stopKey.length());
+                if (message.endsWith(getStopKey())) { // check if the last chars are the stop key
+					return message.substring(1, message.length()-getStopKey().length());
 				}
 			}
 		}

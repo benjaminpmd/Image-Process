@@ -11,18 +11,17 @@ import explorer.TypeChecker;
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.15 (1.0.1)
+ * @version 2021.12.15 (1.0.9)
  */
 public abstract class Image {
-	protected File imageFile;
-	protected String imageType;
-	protected BufferedImage bufferedImage;
-	protected int imageWidth;
-	protected int imageHeight;
-	protected String beginKey;
-	protected String stopKey;
-	protected String path;
-	
+	private File imageFile;
+	private String imageType;
+	private BufferedImage bufferedImage;
+	private int imageWidth;
+	private int imageHeight;
+	private String beginKey;
+	private String stopKey;
+	private String path;
 
 	/**
 	 * Constructor of the Image class
@@ -43,10 +42,35 @@ public abstract class Image {
 		stopKey = "//";
 	}
 
-	/**
-	 * @return the image MIME type.
-	 */
+	public File getImageFile() {
+		return imageFile;
+	}
+
 	public String getImageType() {
 		return imageType;
+	}
+
+	public BufferedImage getBufferedImage() {
+		return bufferedImage;
+	}
+
+	public int getImageWidth() {
+		return imageWidth;
+	}
+
+	public int getImageHeight() {
+		return imageHeight;
+	}
+
+	public String getBeginKey() {
+		return beginKey;
+	}
+
+	public String getStopKey() {
+		return stopKey;
+	}
+
+	public String getPath() {
+		return path;
 	}
 }

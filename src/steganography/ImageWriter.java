@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
  * Class used to read message contained in a PNG image
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.19 (1.0.4)
+ * @version 2021.12.19 (1.0.5)
  * @see Image
  */
 public class ImageWriter extends Image {
@@ -24,7 +24,7 @@ public class ImageWriter extends Image {
      */
 	public ImageWriter(String path) throws IllegalArgumentException, IOException {
         super(path);
-        outputBufferedImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+        outputBufferedImage = new BufferedImage(getImageWidth(), getImageHeight(), BufferedImage.TYPE_INT_ARGB);
 	}
 
     /**
@@ -66,13 +66,13 @@ public class ImageWriter extends Image {
      * @throws IOException - in case of failure updating the BufferedImage used to store pixels values.
      */
     public void hideMessage(String message) throws IOException {
-        message = beginKey + message + stopKey;
+        message = getBeginKey() + message + getStopKey();
         String binaryMessage = stringToBinary(message);
         int index = 0;
-        for (int i = 0; i < imageWidth; i++) {
-            for (int j = 0; j < imageHeight; j++) {
+        for (int i = 0; i < getImageWidth(); i++) {
+            for (int j = 0; j < getImageHeight(); j++) {
                 if (index < binaryMessage.length()) {
-                    Color pixelColor = new Color(bufferedImage.getRGB(i, j), true);
+                    Color pixelColor = new Color(getBufferedImage().getRGB(i, j), true);
                     int alpha = changeLastBits(pixelColor.getAlpha(), binaryMessage.substring(index, index+2));
                     int red = changeLastBits(pixelColor.getRed(), binaryMessage.substring(index+2, index+4));
                     int green = changeLastBits(pixelColor.getGreen(), binaryMessage.substring(index+4, index+6));
@@ -82,7 +82,7 @@ public class ImageWriter extends Image {
                     outputBufferedImage.setRGB(i, j, newPixelColor.getRGB());
                 }
                 else {
-                    outputBufferedImage.setRGB(i, j, bufferedImage.getRGB(i, j));
+                    outputBufferedImage.setRGB(i, j, getBufferedImage().getRGB(i, j));
                 }
             }
         }
@@ -96,11 +96,11 @@ public class ImageWriter extends Image {
      */
     public boolean saveImage() throws IOException {
         File outputImageFile;
-        if (imageType.equals("jpg") | imageType.equals("jpeg")) {
-            outputImageFile = new File(path.substring(0, path.length()-3) + "png");
+        if (getImageType().equals("jpg") | getImageType().equals("jpeg")) {
+            outputImageFile = new File(getPath().substring(0, getPath().length()-3) + "png");
         }
         else {
-            outputImageFile = imageFile;
+            outputImageFile = getImageFile();
         }
         return ImageIO.write(outputBufferedImage, "png", outputImageFile);
     }
