@@ -16,7 +16,7 @@ Cette application offre les options suivantes :
 ## Exigence
 > Cette application est compilée pour fonctionner avec Java 11 ou supérieur. Pour installer Java, veuillez-vous rendre [ici](https://www.oracle.com/java/technologies/downloads/).
 
-L'exécution du code source requiert également l'installation de la librairie [metadata-extractor](https://github.com/drewnoakes/metadata-extractor)<>
+L'exécution du code source requiert également l'installation de la librairie [metadata-extractor](https://github.com/drewnoakes/metadata-extractor).
 
 
 ## Utilisation de la version en ligne de commande
