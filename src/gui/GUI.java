@@ -74,7 +74,7 @@ public class GUI extends JFrame {
 		menuFichier = new JMenu("Fichier");
 		ouvrir = new JMenuItem("Ouvrir...");
 		ouvrir.addActionListener(new ChooseFileAction());	
-		menuRecents = new JMenu("recents");
+		menuRecents = new JMenu("Fichiers recents");
 		readRecentFile();
 		menuAide = new JMenu("Aide");
 		voirAide = new JCheckBoxMenuItem("Afficher l'aide");
@@ -178,6 +178,8 @@ public class GUI extends JFrame {
 	public void readRecentFile() {
 		fileHistory.clear();
 		try {
+			File temp = new File(tempFilePath);
+            if (!temp.exists()) temp.createNewFile();
 			ObjectInputStream oos = new ObjectInputStream(new FileInputStream(tempFilePath));
 			String fileName = null;
 			while ((fileName = (String) oos.readObject()) != null) {

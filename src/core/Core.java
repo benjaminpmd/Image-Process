@@ -48,6 +48,7 @@ public class Core {
         return ("\n"
         	+ "Ecrivez votre message dans le rectangle de gauche, puis appuyez sur le bouton \"Cacher le message dans l\'image\". \n\n"
         	+ "Enfin, pour verifier que votre image contient bien votre message, cliquez sur le bouton \"lire le message \" a droite. \n\n"
+        	+ "Si ça ne marche pas, ouvrez l'image du même nom mais au format png comme suit : \n"
         	+ "Pour recommencer l'operation avec une autre image, dans la barre des menus, cliquez sur Fichier -> Ouvrir..."
 		);
     }
