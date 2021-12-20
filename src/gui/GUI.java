@@ -5,45 +5,28 @@ package gui;
  * @author Alice MABILLE
  */
 import core.Core;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.File;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;	
 	private Core core = new Core();	
 	private Container guiComponent;	
 	private JButton readButton, writeButton;
-	private ImageIcon icon;
 	private JTextArea messageToWrite, messageFound, metadata;
 	private JTextArea helpDisplay = new JTextArea(core.getGUIHelp());	
-	private JMenu menuFichier, menuAide;
+	private JMenu menuFichier, menuAide, menuRecents;
 	private JMenuItem ouvrir, voirAide;
 	private JMenuBar menuBar = new JMenuBar();
 	private Dimension minSize = new Dimension(800, 500);
 	private JFileChooser fileChooser = new JFileChooser();
-	private RecentFileMenu recents;
 	private String path = "";
+	private String tempFilePath;
+	private ArrayList<String> fileHistory;
 	
 	public GUI(String title) {
 		super(title);
@@ -53,7 +36,10 @@ public class GUI extends JFrame {
 	private void init(){
 		guiComponent = getContentPane();
 		
-		icon = new ImageIcon("assets/Image4.png");
+		new File("./cache/").mkdir();
+		tempFilePath = "./cache/recent.tmp";
+		new File(tempFilePath);
+		fileHistory = new ArrayList<String>();
 		
 		messageToWrite = new JTextArea("Message a cacher");
 		messageToWrite.setLineWrap(true);
@@ -79,7 +65,6 @@ public class GUI extends JFrame {
 		messageFound.setWrapStyleWord(true);
 		messageFound.setEditable(false);
 		
-		
 		helpDisplay.setLineWrap(true);
 		helpDisplay.setWrapStyleWord(true);
 		helpDisplay.setEditable(false);
@@ -88,20 +73,15 @@ public class GUI extends JFrame {
 		
 		menuFichier = new JMenu("Fichier");
 		ouvrir = new JMenuItem("Ouvrir...");
-		ouvrir.addActionListener(new ChooseFileAction());
-		recents=new RecentFileMenu("recents_files",10){
-		public void onSelectFile(String filePath){
-		        onRecentFile(filePath);
-		    }
-		};
-		menuFichier.add(recents);
-		
+		ouvrir.addActionListener(new ChooseFileAction());	
+		menuRecents = new JMenu("recents");
+		readRecentFile();
 		menuAide = new JMenu("Aide");
 		voirAide = new JCheckBoxMenuItem("Afficher l'aide");
 		voirAide.addItemListener(new DisplayHelpAction());
 		
 		menuFichier.add(ouvrir);
-		menuFichier.add(recents);
+		menuFichier.add(menuRecents);
 		menuAide.add(voirAide);
 		menuBar.add(menuFichier);
 		menuBar.add(menuAide);
@@ -130,10 +110,11 @@ public class GUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize(minSize);
 		pack();
-		setIconImage(icon.getImage());
 		setVisible(true);
 		
 	}
+
+
 
 	private class ChooseFileAction implements ActionListener {
 		@Override
@@ -144,16 +125,9 @@ public class GUI extends JFrame {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				path=file.getPath();
-				recents.addEntry(path);
 				metadata.setText(core.getExifContent(path));
 			}
 		}
-	}
-	
-	public void onRecentFile(String filePath){
-	   path=filePath;
-	   recents.addEntry(path);
-	   metadata.setText(core.getExifContent(path));
 	}
 	
 	private class WriteMessageAction implements ActionListener {
@@ -161,6 +135,7 @@ public class GUI extends JFrame {
 		public void actionPerformed(ActionEvent e) throws IllegalArgumentException {
 			if (!path.isEmpty()) {
 				core.hideMessage(path, messageToWrite.getText());
+				addRecentFile(path);
 			}
 			else {
 				new ChooseFileAction().actionPerformed(e);;
@@ -180,7 +155,14 @@ public class GUI extends JFrame {
 				messageFound.setText(core.readMessage(path));
 			}
 		}
+	}
 
+	private class OpenRecentFile implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			path = e.getActionCommand();
+			metadata.setText(core.getExifContent(path));
+		}
 	}
 	
 	private class DisplayHelpAction implements ItemListener {
@@ -191,11 +173,48 @@ public class GUI extends JFrame {
 			}
 			else helpDisplay.setVisible(true);
 		}
+	}
 
+	public void readRecentFile() {
+		fileHistory.clear();
+		try {
+			ObjectInputStream oos = new ObjectInputStream(new FileInputStream(tempFilePath));
+			String fileName = null;
+			while ((fileName = (String) oos.readObject()) != null) {
+				fileHistory.add(fileName);
+				JMenuItem fileOption = menuRecents.add(new JMenuItem(fileName));
+				fileOption.addActionListener(new OpenRecentFile());
+			}
+			oos.close();
+		} catch (EOFException e) {
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (ClassNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public void addRecentFile(String path) {
+		menuRecents.add(new JMenuItem(path));
+		fileHistory.add(path);
+		ObjectOutputStream oos;
+		try {
+			new File(tempFilePath).createNewFile();
+			oos = new ObjectOutputStream(new FileOutputStream(tempFilePath));
+			for (String fileName : fileHistory) {
+				oos.writeObject(fileName);
+			}
+			oos.close();
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public static void main(String[] args) {
 		new GUI("Steganographe");
 	}
-
 }
