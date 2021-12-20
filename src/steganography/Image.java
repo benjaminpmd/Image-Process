@@ -3,7 +3,6 @@ package steganography;
 import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
 import javax.imageio.ImageIO;
 import explorer.TypeChecker;
 
@@ -12,7 +11,7 @@ import explorer.TypeChecker;
  * 
  * @author Benjamin PAUMARD, Alice MABILLE
  * @since December 1st 2021
- * @version 2021.12.15 (1.0.9)
+ * @version 2021.12.20 (1.1.0)
  */
 public abstract class Image {
 	private File imageFile;

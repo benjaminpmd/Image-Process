@@ -1,17 +1,37 @@
 # Projet S3
 
+![workflow-test](https://github.com/benjaero/Image-Process/actions/workflows/maven-test.yml/badge.svg)
+
+> Ce projet est réalisé par Alice MABILLE et Benjamin PAUMARD, étudiants en L2-I dans le groupe TD-C à Cergy-Paris Université. Ce projet met en application les connaissances aquises dans les UE "Programmation orientée Objet" ainsi que "Boite à Outils du Programmeur".
+
 ## Introduction
+---
+> Ce projet vise à la création d'une application bureatique orientée sur le traitement d'image. l'intégralité du code est en Java.
 
-This application is a multi purpose command line or graphical interface focused on images treatement.
-This application features the following options:
-* Directory scan for png, jpg and jpeg images
-* EXIF data display of an image
-* Steganography system
-  * Write a message in an image. If you want to hide a message in a jpg image, the application will simply create a png copy of it to avoid compression.
-  * Retrieve a message hidden in a png image.
+Cette application offre les options suivantes :
+* Scan d'un répartoire et affiachage des images PNG, JPG et JPEG présentes
+* Affichage des données EXIF d'une image
+* Système de stéganographie
+  * Cache un message dans une image (Crée une nouvelle image au format PNG si l'image d'entrée est dans un autre format)
+  * Retrouve un message caché dans une image par l'application
 
-## Cli version
-the cli version must be used in a command terminal, you must navigate to the directory where the jar file is located. From here, you can call it by entering: `java -jar cli.jar`
+## Exigence
+---
+> Cette application est compilée pour fonctionner avec Java 11 ou supérieur. Pour installer Java, veuillez vous rendre [ici](https://www.oracle.com/java/technologies/downloads/).
 
-Different options are available:
-* `-h` or `--help` will print the help of the cli in the terminal, you can find here 
+
+
+## Utilisationde la version en ligne de commande
+---
+> La version en ligne de commande doit être utilisée dans le terminal. Pour l'appeler, il suffit de naviguer vers le répertoire ou se situe le fichier `cli.jar`. Une fois dans le bon répartoire, l'appel se fait avec la commande suivante :  `java -jar cli.jar`
+
+Vous pouvez ensuite placer les options suivante :
+* `-h` ou `--help` : affiche l'aide de l'application (version cli)
+* `-d <chemin d'un répertoire>` : affiche toutes les images contenues dans un répertoire et dans les sous répertoires.
+* `-f <chemin d'accès d'une image>` : affiche les métadonnées de l'image.
+* `-s <message>` : cache un message dans une image, attention, cette option requiert l'option précédente. 
+* `-e` : affiche un message caché dans une image, attention, cette option requiert l'option précédente. 
+
+## Utilisation de la version graphique
+---
+> La version graphique de l'application offre les mêmes possibilitées, à l'exception de l'exploration d'un répertoire qui se fait via un menu n'affichant que les images. Pour utiliser la version graphique, il est nécessaire de naviguer vers le répertoire ou est situé le fichier `gui.jar`. l'appel de ce dernier se fait par la commande : `java -jar gui.jar`
