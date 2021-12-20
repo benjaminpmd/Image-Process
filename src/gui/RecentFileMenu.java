@@ -40,7 +40,6 @@ public abstract class RecentFileMenu extends JMenu{
 	public RecentFileMenu(String name,int count){
 		super();
 		this.setText("Recent");
-		this.setMnemonic('R');
 		this.itemCount=count;
 		//initialize default entries
 		this.recentEntries=new String[count];

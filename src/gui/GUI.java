@@ -51,7 +51,7 @@ public class GUI extends JFrame {
 	private Dimension minSize = new Dimension(800, 500);
 	private JFileChooser fileChooser = new JFileChooser();
 	private RecentFileMenu recents;
-	private String path;	
+	private String path = "";	
 	private ArrayList<String> paths = new ArrayList<String>();
 	private ArrayList<String> cachePaths = new ArrayList<String>();
 	
@@ -217,11 +217,12 @@ public class GUI extends JFrame {
 	private class WriteMessageAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) throws IllegalArgumentException {
-			if (!path.equals(null)) {
+			if (!path.isEmpty()) {
 				core.hideMessage(path, messageToWrite.getText());
 			}
 			else {
-				throw new IllegalArgumentException();
+				new ChooseFileAction().actionPerformed(e);;
+				core.hideMessage(path, messageToWrite.getText());
 			}
 		}
 	}
@@ -229,7 +230,13 @@ public class GUI extends JFrame {
 	private class ReadMessageAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			messageFound.setText(core.readMessage(path));
+			if (!path.isEmpty()) {
+				messageFound.setText(core.readMessage(path));
+			}
+			else {
+				new ChooseFileAction().actionPerformed(e);
+				messageFound.setText(core.readMessage(path));
+			}
 		}
 
 	}
