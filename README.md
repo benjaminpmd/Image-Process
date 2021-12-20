@@ -7,7 +7,6 @@ Ce projet est réalisé par Alice MABILLE et Benjamin PAUMARD, étudiants en L2-
 ## Introduction
 ---
 Ce projet vise à la création d'une application bureatique orientée sur le traitement d'image. l'intégralité du code est en Java.
-
 Cette application offre les options suivantes :
 * Scan d'un répartoire et affiachage des images PNG, JPG et JPEG présentes
 * Affichage des données EXIF d'une image
