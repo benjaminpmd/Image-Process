@@ -39,21 +39,17 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;	
 	private Core core = new Core();	
 	private Container guiComponent;	
-	private JButton readButton;
-	private JButton writeButton;
+	private JButton readButton, writeButton;
 	private ImageIcon icon;
 	private JTextArea messageToWrite, messageFound, metadata;
 	private JTextArea helpDisplay = new JTextArea(core.getGUIHelp());	
-	private JMenu menuFichier, menuEdition, menuAffichage, menuAide;
-	private JMenuItem ouvrir, fichier0, fichier1, fichier2, lire, ecrire, voirAide;
-	private JCheckBoxMenuItem imgVisibleBtn; 
-	private JMenuBar menuBar = new JMenuBar();	
+	private JMenu menuFichier, menuAide;
+	private JMenuItem ouvrir, voirAide;
+	private JMenuBar menuBar = new JMenuBar();
 	private Dimension minSize = new Dimension(800, 500);
 	private JFileChooser fileChooser = new JFileChooser();
 	private RecentFileMenu recents;
-	private String path = "";	
-	private ArrayList<String> paths = new ArrayList<String>();
-	private ArrayList<String> cachePaths = new ArrayList<String>();
+	private String path = "";
 	
 	public GUI(String title) {
 		super(title);
@@ -66,25 +62,6 @@ public class GUI extends JFrame {
 		guiComponent = getContentPane();
 		
 		icon = new ImageIcon("assets/Image4.png");
-		
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream("cache/recentFilesData.tmp");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			cachePaths = (ArrayList<String>) ois.readObject();
-			ois.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		
 		messageToWrite = new JTextArea("Message à cacher");
 		messageToWrite.setLineWrap(true);
@@ -126,16 +103,6 @@ public class GUI extends JFrame {
 		    }
 		};
 		menuFichier.add(recents);
-
-		
-		menuEdition = new JMenu("Edition");
-		lire = new JMenuItem("Lire le message");
-		lire.addActionListener(new ReadMessageAction());
-		ecrire = new JMenuItem("Ecrire un message...");
-		ecrire.addActionListener(new WriteMessageAction());
-		
-		menuAffichage = new JMenu("Affichage");
-		imgVisibleBtn = new JCheckBoxMenuItem("Image visible");
 		
 		menuAide = new JMenu("Aide");
 		voirAide = new JCheckBoxMenuItem("Afficher l'aide");
@@ -143,13 +110,8 @@ public class GUI extends JFrame {
 		
 		menuFichier.add(ouvrir);
 		menuFichier.add(recents);
-		menuEdition.add(lire);
-		menuEdition.add(ecrire);
-		menuAffichage.add(imgVisibleBtn);
 		menuAide.add(voirAide);
 		menuBar.add(menuFichier);
-		menuBar.add(menuEdition);
-		menuBar.add(menuAffichage);
 		menuBar.add(menuAide);
 		setJMenuBar(menuBar);
 		
@@ -172,8 +134,7 @@ public class GUI extends JFrame {
 		
 		Font font = new Font(Font.MONOSPACED, Font.ITALIC, 15);
 		messageFound.setFont(font);
-				
-				
+								
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize(minSize);
 		pack();
@@ -191,19 +152,6 @@ public class GUI extends JFrame {
 				path=file.getPath();
 				recents.addEntry(path);
 				metadata.setText(core.getExifContent(path));
-				FileOutputStream fos;
-				try {
-					fos = new FileOutputStream("cache/recentFilesData.tmp");
-					ObjectOutputStream oos = new ObjectOutputStream(fos);
-			        oos.writeObject(paths);
-			        oos.close();
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		}
 	}

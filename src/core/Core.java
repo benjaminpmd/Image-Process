@@ -44,7 +44,9 @@ public class Core {
     
     public String getGUIHelp() {
         return ("\n"
-        	+ " Veuillez ouvrir un fichier grâce au menu en haut à gauche avant de tenter de lire ou écrire un message."
+        	+ "Ecrivez votre message dans le rectangle de gauche, puis appuyez sur le bouton \"Cacher le message dans l\'image\". \n"
+        	+ "Enfin, pour vérifier que votre image contient bien votre message, cliquez sur le bouton \"lire le message \" à droite. \n"
+        	+ "Pour recommencer l'opération avec une autre image, dans la barre des menus, cliquez sur Fichier -> Ouvrir..."
 		);
     }
 
