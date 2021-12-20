@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -54,7 +55,7 @@ public class GUI extends JFrame {
 		
 		icon = new ImageIcon("assets/Image4.png");
 		
-		messageToWrite = new JTextArea("Message � cacher");
+		messageToWrite = new JTextArea("Message a cacher");
 		messageToWrite.setLineWrap(true);
 		messageToWrite.setWrapStyleWord(true);
 		messageToWrite.setEditable(true);
@@ -137,6 +138,8 @@ public class GUI extends JFrame {
 	private class ChooseFileAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "png", "jpeg", "jpg");
+			fileChooser.setFileFilter(filter);
 			int returnVal = fileChooser.showOpenDialog(guiComponent);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
@@ -192,7 +195,7 @@ public class GUI extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new GUI("Stéganographe");
+		new GUI("Steganographe");
 	}
 
 }

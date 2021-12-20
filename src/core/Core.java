@@ -40,9 +40,15 @@ public class Core {
 		);
     }
 
-	public String getGUIHelp() {
+	/**
+	 * The help of the gui
+	 * @return the help content of the gui version of the app
+	 */
+    public String getGUIHelp() {
         return ("\n"
-        	+ " Si tu passes ta vie à regretter le bon vieux temps, le bon jeune temps va te passer sous le nez, maaan."
+        	+ "Ecrivez votre message dans le rectangle de gauche, puis appuyez sur le bouton \"Cacher le message dans l\'image\". \n\n"
+        	+ "Enfin, pour verifier que votre image contient bien votre message, cliquez sur le bouton \"lire le message \" a droite. \n\n"
+        	+ "Pour recommencer l'operation avec une autre image, dans la barre des menus, cliquez sur Fichier -> Ouvrir..."
 		);
     }
 
