@@ -6,15 +6,12 @@ package gui;
  */
 import core.Core;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -22,7 +19,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -40,29 +36,22 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class GUI extends JFrame {
-	private static final long serialVersionUID = 1L;
-	
-	private Core core = new Core();
-	
-	private Container guiComponent;
-	
+	private static final long serialVersionUID = 1L;	
+	private Core core = new Core();	
+	private Container guiComponent;	
 	private JButton readButton;
 	private JButton writeButton;
 	private ImageIcon icon;
 	private JTextArea messageToWrite, messageFound, metadata;
-	private JTextArea helpDisplay = new JTextArea(core.getGUIHelp());
-	
-	private JMenu menuFichier, recents, menuEdition, menuAffichage, menuAide;
-	private JMenuItem ouvrir, fichier0, fichier1, fichier2, effacer, lire, ecrire, voirAide;
+	private JTextArea helpDisplay = new JTextArea(core.getGUIHelp());	
+	private JMenu menuFichier, menuEdition, menuAffichage, menuAide;
+	private JMenuItem ouvrir, fichier0, fichier1, fichier2, lire, ecrire, voirAide;
 	private JCheckBoxMenuItem imgVisibleBtn; 
-	private JMenuBar menuBar = new JMenuBar();
-	
+	private JMenuBar menuBar = new JMenuBar();	
 	private Dimension minSize = new Dimension(800, 500);
-
 	private JFileChooser fileChooser = new JFileChooser();
-	//for testing
-	private String path;
-	
+	private RecentFileMenu recents;
+	private String path;	
 	private ArrayList<String> paths = new ArrayList<String>();
 	private ArrayList<String> cachePaths = new ArrayList<String>();
 	
@@ -131,30 +120,13 @@ public class GUI extends JFrame {
 		menuFichier = new JMenu("Fichier");
 		ouvrir = new JMenuItem("Ouvrir...");
 		ouvrir.addActionListener(new ChooseFileAction());
-		recents = new JMenu("Fichiers récents");
-		switch (cachePaths.size()) {
-		case 1 :
-			fichier0 = new JMenuItem(cachePaths.get(0));
-			fichier0.addActionListener(new OpenFileAction(cachePaths.get(0)));
-		case 2 :
-			fichier0 = new JMenuItem(cachePaths.get(0));
-			fichier0.addActionListener(new OpenFileAction(cachePaths.get(0)));
-			fichier1 = new JMenuItem(cachePaths.get(1));
-			fichier1.addActionListener(new OpenFileAction(cachePaths.get(1)));
-		case 3 :
-			fichier0 = new JMenuItem(cachePaths.get(0));
-			fichier0.addActionListener(new OpenFileAction(cachePaths.get(0)));
-			fichier1 = new JMenuItem(cachePaths.get(1));
-			fichier1.addActionListener(new OpenFileAction(cachePaths.get(1)));
-			fichier2 = new JMenuItem(cachePaths.get(2));
-			fichier2.addActionListener(new OpenFileAction(cachePaths.get(2)));
-		}
-		recents.add(fichier2);
-		recents.add(fichier1);
-		recents.add(fichier0);
+		recents=new RecentFileMenu("recents_files",10){
+		public void onSelectFile(String filePath){
+		        onRecentFile(filePath);
+		    }
+		};
+		menuFichier.add(recents);
 
-		effacer = new JMenuItem("Effacer");
-		recents.add(effacer);
 		
 		menuEdition = new JMenu("Edition");
 		lire = new JMenuItem("Lire le message");
@@ -217,7 +189,7 @@ public class GUI extends JFrame {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				path=file.getPath();
-				paths.add(path);
+				recents.addEntry(path);
 				metadata.setText(core.getExifContent(path));
 				FileOutputStream fos;
 				try {
@@ -236,15 +208,10 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	private class OpenFileAction implements ActionListener {
-		public OpenFileAction(String path1) {
-			path=path1;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			metadata.setText(core.getExifContent(path));
-		}
+	public void onRecentFile(String filePath){
+	   path=filePath;
+	   recents.addEntry(path);
+	   metadata.setText(core.getExifContent(path));
 	}
 	
 	private class WriteMessageAction implements ActionListener {
