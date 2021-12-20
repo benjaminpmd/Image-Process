@@ -3,6 +3,7 @@ package steganography;
 import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 import explorer.TypeChecker;
 
@@ -32,14 +33,28 @@ public abstract class Image {
 	public Image(String path) throws IOException, IllegalArgumentException {
 		TypeChecker typeChecker = new TypeChecker();
 		if (!typeChecker.isImage(path)) throw new IllegalArgumentException("The path does not lead to an image");
+		this.path = path;
 		imageFile = new File(path);
 		imageType = typeChecker.getMimeType(path);
 		bufferedImage = ImageIO.read(imageFile);
 		imageWidth = bufferedImage.getTileWidth();
 		imageHeight = bufferedImage.getTileHeight();
-		this.path = path;
 		beginKey = "*";
 		stopKey = "//";
+	}
+
+	@Override
+	public String toString() {
+		return "Image{" +
+				"imageFile=" + imageFile +
+				", imageType='" + imageType + '\'' +
+				", bufferedImage=" + bufferedImage +
+				", imageWidth=" + imageWidth +
+				", imageHeight=" + imageHeight +
+				", beginKey='" + beginKey + '\'' +
+				", stopKey='" + stopKey + '\'' +
+				", path='" + path + '\'' +
+				'}';
 	}
 
 	public File getImageFile() {

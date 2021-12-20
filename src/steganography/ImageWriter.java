@@ -27,6 +27,13 @@ public class ImageWriter extends Image {
         outputBufferedImage = new BufferedImage(getImageWidth(), getImageHeight(), BufferedImage.TYPE_INT_ARGB);
 	}
 
+    @Override
+    public String toString() {
+        return "ImageWriter{" +
+                "outputBufferedImage=" + outputBufferedImage +
+                "} " + super.toString();
+    }
+
     /**
      * Convert a string to a binary string.
      * @param message String the message you want to convert.

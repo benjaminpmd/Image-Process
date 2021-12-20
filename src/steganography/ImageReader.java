@@ -22,6 +22,10 @@ public class ImageReader extends Image {
 		if(!getImageType().equals("png")) throw new IllegalArgumentException("Image is not a PNG file");
     }
 
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 
 	/**
 	 * Extract the last 2 bits of the binary value of a color.
