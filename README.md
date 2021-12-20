@@ -26,8 +26,8 @@ Vous pouvez ensuite placer les options suivantes :
 * `-h` ou `--help` : affiche l'aide de l'application (version cli)
 * `-d <chemin d'un répertoire>` : affiche toutes les images contenues dans un répertoire et dans les sous répertoires.
 * `-f <chemin d'accès d'une image>` : affiche les métadonnées de l'image.
-* `-s <message>` : cache un message dans une image, attention, cette option requiert l'option précédente. 
-* `-e` : affiche un message caché dans une image, attention, cette option requiert l'option précédente. 
+* `-s <message>` : cache un message dans une image, attention, cette option requiert l'option `-f`. 
+* `-e` : affiche un message caché dans une image, attention, cette option requiert l'option `-f`.
 
 ## Utilisation de la version graphique
 
