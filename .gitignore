@@ -30,3 +30,6 @@ build/
 *.jpg
 *.jpeg
 assets
+*.recent
+cache
+*.tmp
