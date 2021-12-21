@@ -104,6 +104,7 @@ public class ImageWriter extends Image {
     public boolean saveImage() throws IOException {
         File outputImageFile;
         if (getImageType().equals("jpg") | getImageType().equals("jpeg")) {
+            // recreating a new png image with the same name and path as the jpeg image.
             outputImageFile = new File(getPath().substring(0, getPath().length()-3) + "png");
         }
         else {

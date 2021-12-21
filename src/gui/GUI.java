@@ -12,7 +12,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 
-public class GUI extends JFrame {
+public class Gui extends JFrame {
 	private static final long serialVersionUID = 1L;	
 	private Core core = new Core();	
 	private Container guiComponent;	
@@ -28,7 +28,7 @@ public class GUI extends JFrame {
 	private String tempFilePath;
 	private ArrayList<String> fileHistory;
 	
-	public GUI(String title) {
+	public Gui(String title) {
 		super(title);
 		init();
 	}
@@ -40,7 +40,7 @@ public class GUI extends JFrame {
 		new File(tempFilePath);
 		fileHistory = new ArrayList<String>();
 		
-		messageToWrite = new JTextArea("Message a cacher");
+		messageToWrite = new JTextArea("Message to hide");
 		messageToWrite.setLineWrap(true);
 		messageToWrite.setWrapStyleWord(true);
 		messageToWrite.setEditable(true);
@@ -49,13 +49,14 @@ public class GUI extends JFrame {
 		areaScrollPane.setPreferredSize(new Dimension(250, 250));
 		messageToWrite.setAlignmentX(LEFT_ALIGNMENT);
 		
-		metadata = new JTextArea("metadata");
+		metadata = new JTextArea("Metadata");
 		metadata.setLineWrap(true);
 		metadata.setWrapStyleWord(true);
 		metadata.setEditable(false);
 		
-		readButton = new JButton("Lire le message");
-		writeButton = new JButton("Cacher le message dans l'image");
+		readButton = new JButton("Read the message");
+		writeButton = new JButton("Hide the message");
+		writeButton.setPreferredSize(new Dimension(250, 26));
 		readButton.addActionListener(new ReadMessageAction());
 		writeButton.addActionListener(new WriteMessageAction());
 		
@@ -70,13 +71,13 @@ public class GUI extends JFrame {
 		helpDisplay.setVisible(false);
 		add(helpDisplay);
 		
-		menuFichier = new JMenu("Fichier");
-		ouvrir = new JMenuItem("Ouvrir...");
+		menuFichier = new JMenu("File");
+		ouvrir = new JMenuItem("Open...");
 		ouvrir.addActionListener(new ChooseFileAction());	
-		menuRecents = new JMenu("Fichiers recents");
+		menuRecents = new JMenu("Recent files");
 		readRecentFile();
-		menuAide = new JMenu("Aide");
-		voirAide = new JCheckBoxMenuItem("Afficher l'aide");
+		menuAide = new JMenu("Help");
+		voirAide = new JCheckBoxMenuItem("Show help");
 		voirAide.addItemListener(new DisplayHelpAction());
 		
 		menuFichier.add(ouvrir);
@@ -117,6 +118,7 @@ public class GUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "png", "jpeg", "jpg");
 			fileChooser.setFileFilter(filter);
+			fileChooser.setCurrentDirectory(new File("."));
 			int returnVal = fileChooser.showOpenDialog(guiComponent);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
@@ -130,8 +132,9 @@ public class GUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) throws IllegalArgumentException {
 			if (!path.isEmpty()) {
-				core.hideMessage(path, messageToWrite.getText());
+				String result = core.hideMessage(path, messageToWrite.getText());
 				addRecentFile(path);
+				messageFound.setText(result);
 			}
 			else {
 				new ChooseFileAction().actionPerformed(e);;
@@ -173,6 +176,7 @@ public class GUI extends JFrame {
 
 	public void readRecentFile() {
 		fileHistory.clear();
+		menuRecents.removeAll();
 		try {
 			File temp = new File(tempFilePath);
             if (!temp.exists()) temp.createNewFile();
@@ -195,8 +199,11 @@ public class GUI extends JFrame {
 	}
 
 	public void addRecentFile(String path) {
-		menuRecents.add(new JMenuItem(path));
-		fileHistory.add(path);
+		menuRecents.add(new JMenuItem(path), 0);
+		if (fileHistory.contains(path)) {
+			fileHistory.remove(path);
+		}
+		fileHistory.add(0, path);
 		ObjectOutputStream oos;
 		try {
 			new File(tempFilePath).createNewFile();
@@ -210,9 +217,10 @@ public class GUI extends JFrame {
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
+		readRecentFile();
 	}
 
 	public static void main(String[] args) {
-		new GUI("Steganographe");
+		new Gui("Steganography");
 	}
 }
