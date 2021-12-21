@@ -1,5 +1,8 @@
-# Projet S3
+# Image Process
 
+<!---
+La ligne ci dessous affiche un badge indiquant si la compilation du projet Maven est réussie ou non, le test est réalisé en utilsant les actions github
+-->
 ![workflow-test](https://github.com/benjaero/Image-Process/actions/workflows/maven-test.yml/badge.svg)
 
 Ce projet est réalisé par Alice MABILLE et Benjamin PAUMARD, étudiants en L2-I dans le groupe TD-C à Cergy-Paris Université. Ce projet met en application les connaissances acquises dans les UE "Programmation orientée Objet" ainsi que "Boite à Outils du Programmeur".
