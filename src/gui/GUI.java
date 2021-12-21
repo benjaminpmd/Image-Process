@@ -35,7 +35,6 @@ public class GUI extends JFrame {
 	
 	private void init(){
 		guiComponent = getContentPane();
-		
 		new File("./cache/").mkdir();
 		tempFilePath = "./cache/recent.tmp";
 		new File(tempFilePath);
@@ -111,10 +110,7 @@ public class GUI extends JFrame {
 		setMinimumSize(minSize);
 		pack();
 		setVisible(true);
-		
 	}
-
-
 
 	private class ChooseFileAction implements ActionListener {
 		@Override
