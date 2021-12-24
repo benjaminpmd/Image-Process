@@ -9,7 +9,7 @@ import explorer.TypeChecker;
 /**
  * Class containing all attributes needed to manipulate image, get informations to store or retrieve message hidden inside.
  * 
- * @author Benjamin PAUMARD, Alice MABILLE
+ * @author Benjamin PAUMARD
  * @since December 1st 2021
  * @version 2021.12.20 (1.1.0)
  */
@@ -31,7 +31,7 @@ public abstract class Image {
 	 */
 	public Image(String path) throws IOException, IllegalArgumentException {
 		TypeChecker typeChecker = new TypeChecker();
-		if (!typeChecker.isImage(path)) throw new IllegalArgumentException("The path does not lead to an image");
+		if (!typeChecker.isImage(path)) throw new IllegalArgumentException("The path provided does not lead to an image");
 		this.path = path;
 		imageFile = new File(path);
 		imageType = typeChecker.getMimeType(path);

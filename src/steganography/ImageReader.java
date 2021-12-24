@@ -19,7 +19,7 @@ public class ImageReader extends Image {
 	 */
     public ImageReader(String path) throws IllegalArgumentException, IOException {
         super(path);
-		if(!getImageType().equals("png")) throw new IllegalArgumentException("Image is not a PNG file");
+		if(!getImageType().equals("png")) throw new IllegalArgumentException("The path provided does not lead to a PNG image.");
     }
 
 	@Override

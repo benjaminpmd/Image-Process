@@ -1,8 +1,9 @@
 package gui;
 
 /**
- * Graphic Interface ! Uses Core.
+ * Graphic Interface! Uses Core.
  * @author Alice MABILLE
+ * @version 1.0.0
  */
 import core.Core;
 import javax.swing.*;

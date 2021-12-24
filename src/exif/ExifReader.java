@@ -1,6 +1,7 @@
 package exif;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -36,7 +37,7 @@ public class ExifReader {
     };
 
     /**
-     *
+     * Constructor of the object
      * @param path of the image you want to get the exif data from.
      * @throws IllegalArgumentException
      * @throws ImageProcessingException
@@ -50,7 +51,7 @@ public class ExifReader {
         if (imageFile.isFile() && typeChecker.isImage(path)) {
             extractExif();
         }
-        else if (!typeChecker.isImage(path)) {
+        else {
             throw new IllegalArgumentException("The path provided does not lead to an image.");
         }
     }
@@ -76,10 +77,12 @@ public class ExifReader {
                 }
             }
             if (!exif.get("Detected MIME Type").startsWith("image")) {
-                throw new IllegalArgumentException("The path provided does not lead to an image.");
+                throw new IllegalArgumentException("MIME type does not correspond to an image.");
             }
         } catch (ImageProcessingException e) {
             throw new ImageProcessingException(e.getMessage());
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException(e.getMessage());
         } catch (IOException e) {
         	throw new IOException(e.getMessage());
         }

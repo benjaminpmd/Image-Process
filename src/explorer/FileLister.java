@@ -5,8 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
+ * Class that contains mthods to explore a directory and get all images contained inside
  * @author Alice MABILLE
  * @version 1.0.0
+ * @since Decemeber 3rd, 2021
+ * @see explorer.TypeChecker
  */
 public class FileLister {
 	private String path;

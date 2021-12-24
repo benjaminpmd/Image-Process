@@ -23,6 +23,9 @@
 *.jar
 build/
 /target/
+/META-INF/
+*.MF
+/docs/
 
 
 # test files

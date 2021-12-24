@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Class used to read message contained in a PNG image
- * @author Benjamin PAUMARD, Alice MABILLE
+ * @author Benjamin PAUMARD
  * @since December 1st 2021
  * @version 2021.12.19 (1.0.5)
  * @see Image

@@ -18,7 +18,7 @@ import steganography.ImageWriter;
  * The main method of the cli calls the Core class methods
  * 
  * @author Alice MABILLE, Benjamin PAUMARD
- * @version 2021.12.09 (0.9.7)
+ * @version 2021.12.09 (1.0.0)
  * @since November, 21th 2021
  */
 public class Core {
@@ -54,7 +54,7 @@ public class Core {
 
     /**
 	 * Get a list of some of the EXIF data of the provided image.
-	 * @param path - the path of a PNG, JPG or JPEG image.
+	 * @param path the path of a PNG, JPG or JPEG image.
 	 * @return the EXIF data of the path provided.
 	 * @see exif.ExifReader
 	 */
@@ -69,21 +69,21 @@ public class Core {
 			for (String key: metadata.keySet()) {
 				retuString += (key + " : " + metadata.get(key) + "\n");
 			}
-		} catch (FileNotFoundException e) {
-			retuString = "Error: The path provided does not lead to an image.";
+		} catch (ImageProcessingException e) {
+			retuString = e.getMessage();
 		} catch (IllegalArgumentException e) {
-			retuString = "Error: The path provided does not lead to an image.";
-		}catch (ImageProcessingException e) {
-			retuString = "Error: The image could not be saved.";
+			retuString = e.getMessage();
+		} catch (FileNotFoundException e) {
+			retuString = e.getMessage();
 		} catch (IOException e) {
-			retuString = "Error: The path provided does not lead to an image.";
+			retuString = e.getMessage();
 		}
 		return retuString;
 	}
 
 	/**
 	 * Method to get a list of all png, jpg and jpeg images in a directory.
-	 * @param path - the directory you want to check.
+	 * @param path the directory you want to check.
 	 * @return all PNG, JPG and JPEG images in the provided directory.
 	 * @see explorer.FileLister
 	 */
@@ -98,9 +98,9 @@ public class Core {
 				retuString += (image + "\n");
 			}
 		} catch (IllegalArgumentException e) {
-			retuString = "Error: The path provived does not lead to a directory.";
+			retuString = e.getMessage();
 		} catch (FileNotFoundException e) {
-			retuString = "Error: The path does not exist";
+			retuString = e.getMessage();
 		}
 		return retuString;
 	}
@@ -108,8 +108,8 @@ public class Core {
 	/**
 	 * This method allow to hide a message in an image, but warning, if the provided image is a JPG or JPEG image is provided,
 	 * it will be copied into a new PNG image due to compression ratio of JPG images.
-	 * @param path - the path of a PNG, JPG or JPEG image.
-	 * @param message - the message you want to hide in the image.
+	 * @param path the path of a PNG, JPG or JPEG image.
+	 * @param message the message you want to hide in the image.
 	 * @return if the image update is succesfull or not.
 	 * @see steganography.ImageWriter
 	 */
@@ -127,16 +127,16 @@ public class Core {
 			}
 			else retuString = "Error: image update have failed.";
 		} catch (IllegalArgumentException e) {
-			retuString = "Error: The path provived does not lead to an image.";
+			retuString = e.getMessage();
 		} catch (IOException e) {
-			retuString = "Error: Image data retrieval have failed.";
+			retuString = e.getMessage();
 		}
 		return retuString;
 	}
 
 	/**
 	 * Method to get if the image contains a message, and if so, the message contained.
-	 * @param path - the path of a PNG, JPG or JPEG image.
+	 * @param path the path of a PNG, JPG or JPEG image.
 	 * @return the message or an error.
 	 * @see steganography.ImageReader
 	 */
@@ -146,11 +146,11 @@ public class Core {
 			ImageReader reader = new ImageReader(path);
 			retuString = reader.readMessage();
 		} catch (IllegalArgumentException e) {
-			retuString = "Error: The file provided is not correct. Make sure your image exists and is a png file.";
+			retuString = e.getMessage();
 		} catch (NoSuchElementException e) {
-			retuString = "Error: This image does not contain any message.";
+			retuString = e.getMessage();
 		} catch (IOException e) {
-			retuString = "Error: Image data retrieval have failed.";
+			retuString = e.getMessage();
 		}
 		return retuString;
 	}

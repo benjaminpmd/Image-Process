@@ -10,6 +10,7 @@ import exif.ExifReader;
  * Used is to check if a file is an image. Does not throw any exception, as those are managed by the calling classes.
  * @author Alice MABILLE
  * @version 1.0.0
+ * @since Decemeber 3rd, 2021
  */
 public class TypeChecker {
 	private String[] imageTypes;
