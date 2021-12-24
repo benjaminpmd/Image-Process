@@ -60,4 +60,24 @@ public class TypeChecker {
 			return null;
 		}
 	}
+
+	/**
+	 * @param path the file you want to check if the mime type is image of not
+	 * @return if the mime type indicate a PNG, JPEG or JPG image
+	 */
+	public boolean isMimeTypeImage(String path) {
+		ExifReader exifReader;
+		try {
+			exifReader = new ExifReader(path);
+			String typeToCheck = exifReader.getMimeType();
+			for (String type : imageTypes) {
+				if (type.equals(typeToCheck)) {
+					return true;
+				}
+			}
+			return false;
+		} catch (IllegalArgumentException | ImageProcessingException | IOException e) {
+			return false;
+		}
+	}
 }

@@ -42,7 +42,7 @@ public class FileLister {
 			if (tempFile.isDirectory()) {
 				listFilesInDirectory(tempFile);
 			}
-			else if (typeChecker.isImage(directory + "/" + tempPath)) {
+			else if (typeChecker.isImage(directory + "/" + tempPath) && typeChecker.isMimeTypeImage(directory + "/" + tempPath)) {
 				if(directory.getName().equals(path)) {
 					files.add(tempPath);
 				}
