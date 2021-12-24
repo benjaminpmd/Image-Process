@@ -36,3 +36,6 @@ assets
 *.recent
 cache
 *.tmp
+
+# documents
+*.docx
